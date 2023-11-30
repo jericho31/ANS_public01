@@ -11,7 +11,48 @@ class Calculator {
         tt = 0; ll = 0L; dd = .0
     }
 
-    fun prnval() = if (tt == 0) println(ll) else println(dd)
+    fun prnval() = println(if (tt == 0) ll else dd)
+
+    fun implement(s: String): String {
+        val sl = s.split(" ")
+
+        if (sl[0].toDoubleOrNull() != null) {
+            if (sl[0].toLongOrNull() != null) {
+                if (sl.size < 2) return "error: 숫자 뒤에 입력값이 없습니다."
+                val o = sl[1][0]
+                if (o !in operators) return "error: 지원하는 연산자가 아닙니다. o = $o"
+                if (sl.size < 3) return "error: 연산자 뒤에 입력값이 없습니다."
+                if (sl[2].toDoubleOrNull() == null) return "error: 두 번째 숫자를 잘못 입력했습니다. ${sl[2]}"
+                val b = sl[2].toLongOrNull()
+                if (b == null) {
+                    operate(sl[0].toDouble(), o, sl[2].toDouble())
+                } else {
+                    operate(sl[0].toLong(), o, b)
+                }
+            } else {
+                if (sl.size < 2) return "error: 숫자 뒤에 입력값이 없습니다."
+                val o = sl[1][0]
+                if (o !in operators) return "error: 지원하는 연산자가 아닙니다. o = $o"
+                if (sl.size < 3) return "error: 연산자 뒤에 입력값이 없습니다."
+                val b = sl[2].toDoubleOrNull()
+                if (b == null) return "error: 두 번째 숫자를 잘못 입력했습니다. ${sl[2]}"
+                operate(sl[0].toDouble(), o, b)
+            }
+        } else {  // 연산자 + 숫자
+            val o = sl[0][0]
+            if (o !in operators) return "error: 지원하는 연산자가 아닙니다. o = $o"
+            if (sl.size < 2) return "error: 연산자 뒤에 입력값이 없습니다."
+            if (sl[1].toDoubleOrNull() == null) return "error: 숫자를 잘못 입력했습니다. ${sl[1]}"
+            val b = sl[1].toLongOrNull()
+            if (b == null) {
+                operate(o, sl[1].toDouble())
+            } else {
+                operate(o, b)
+            }
+        }
+        return if (tt == 0) ll.toString() else dd.toString()
+    }
+
     fun operate(o: Char, b: Double): Double =
         when (o) {
             '+' -> add(b)
