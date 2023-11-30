@@ -16,41 +16,74 @@ fun main() {
         s = readln()
         when (s) {
             "" -> continue
-            "q", "Q" -> return
-            "r", "R" -> {
+            "q", "Q", "ㅂ" -> return
+            "r", "R", "ㄱ" -> {
                 calc.clear()
                 println('0')
                 continue
             }
         }
         sl = s.split(" ")
-        when {
-            sl[0].toLongOrNull() != null -> {
 
-            }
-
-            sl[0].toDoubleOrNull() != null -> {
-
-            }
-
-            else -> {
-                val o = sl[0][0]
+        if (sl[0].toDoubleOrNull() != null) {
+            if (sl[0].toLongOrNull() != null) {
+                val o = sl[1][0]
                 if (o !in calc.operators) {
                     println("error: 지원하는 연산자가 아닙니다. o = $o")
                     continue
                 }
-                if (sl.size < 2) {
+                if (sl.size < 3) {
+                    println("error: 연산자 뒤에 입력값이 없습니다. $sl")
+                    continue
+                }
+                if (sl[2].toDoubleOrNull() == null) {
+                    println("error: 두 번째 숫자를 잘못 입력했습니다. ${sl[2]}")
+                    continue
+                }
+                val b = sl[2].toLongOrNull()
+                if (b == null) {
+                    calc.operate(sl[0].toDouble(), o, sl[2].toDouble())
+                } else {
+                    calc.operate(sl[0].toLong(), o, b)
+                }
+            } else {
+                val o = sl[1][0]
+                if (o !in calc.operators) {
+                    println("error: 지원하는 연산자가 아닙니다. o = $o")
+                    continue
+                }
+                if (sl.size < 3) {
                     println("error: 연산자 뒤에 입력값이 없습니다.")
                     continue
                 }
-                if (sl[1].toLongOrNull() != null) {
-                    calc.operate(o, sl[1].toLong())
-                } else if (sl[1].toDoubleOrNull() != null) {
-                    calc.operate(o, sl[1].toDouble())
+                val b = sl[2].toDoubleOrNull()
+                if (b == null) {
+                    println("error: 두 번째 숫자를 잘못 입력했습니다. ${sl[2]}")
+                    continue
                 }
-
-                calc.prnval()
+                calc.operate(sl[0].toDouble(), o, b)
+            }
+        } else {  // 연산자 + 숫자
+            val o = sl[0][0]
+            if (o !in calc.operators) {
+                println("error: 지원하는 연산자가 아닙니다. o = $o")
+                continue
+            }
+            if (sl.size < 2) {
+                println("error: 연산자 뒤에 입력값이 없습니다.")
+                continue
+            }
+            if (sl[1].toDoubleOrNull() == null) {
+                println("error: 숫자를 잘못 입력했습니다. ${sl[1]}")
+                continue
+            }
+            val b = sl[1].toLongOrNull()
+            if (b == null) {
+                calc.operate(o, sl[1].toDouble())
+            } else {
+                calc.operate(o, b)
             }
         }
+        calc.prnval()
     }
 }

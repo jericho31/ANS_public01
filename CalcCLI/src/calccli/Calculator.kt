@@ -9,6 +9,7 @@ class Calculator {
     fun clear() {
         tt = 0; ll = 0L; dd = .0
     }
+
     fun prnval() = if (tt == 0) println(ll) else println(dd)
     fun operate(o: Char, b: Double): Double =
         when (o) {
@@ -29,11 +30,51 @@ class Calculator {
             '+' -> addLongToLong(b)
             '-' -> subtractLongToLong(b)
             '*' -> multiplyLongToLong(b)
-            '/' -> divide(b.toDouble())
+            '/' -> divideLongToLong(b)
             '%' -> modLongToLong(b)
             else -> throw IllegalArgumentException("error: 잘못된 연산자: $o")
         }
     }
+
+    fun operate(a: Double, o: Char, b: Double): Double =
+        when (o) {
+            '+' -> add(a, b)
+            '-' -> subtract(a, b)
+            '*' -> multiply(a, b)
+            '/' -> divide(a, b)
+            '%' -> mod(a, b)
+            else -> throw IllegalArgumentException("error: 잘못된 연산자: $o")
+        }
+
+    fun operate(a: Double, o: Char, b: Long): Double =
+        when (o) {
+            '+' -> add(a, b)
+            '-' -> subtract(a, b)
+            '*' -> multiply(a, b)
+            '/' -> divide(a, b)
+            '%' -> mod(a, b)
+            else -> throw IllegalArgumentException("error: 잘못된 연산자: $o")
+        }
+
+    fun operate(a: Long, o: Char, b: Double): Double =
+        when (o) {
+            '+' -> add(a, b)
+            '-' -> subtract(a, b)
+            '*' -> multiply(a, b)
+            '/' -> divide(a, b)
+            '%' -> mod(a, b)
+            else -> throw IllegalArgumentException("error: 잘못된 연산자: $o")
+        }
+
+    fun operate(a: Long, o: Char, b: Long): Long =
+        when (o) {
+            '+' -> add(a, b)
+            '-' -> subtract(a, b)
+            '*' -> multiply(a, b)
+            '/' -> divide(a, b)
+            '%' -> mod(a, b)
+            else -> throw IllegalArgumentException("error: 잘못된 연산자: $o")
+        }
 
     fun add(b: Double): Double {
         if (tt == 0) {
@@ -44,7 +85,7 @@ class Calculator {
 
     fun addLongToLong(b: Long): Long {
         if (tt == 1) {
-            println("warning: 기존값이 Double입니다. 강제로 Long으로 캐스팅합니다.")
+            println("warning: 기존값이 $dd Double입니다. 강제로 Long으로 캐스팅합니다.")
             tt = 0; ll = dd.toLong() + b
         } else ll += b
         return ll
@@ -59,7 +100,7 @@ class Calculator {
 
     fun subtractLongToLong(b: Long): Long {
         if (tt == 1) {
-            println("warning: 기존값이 Double입니다. 강제로 Long으로 캐스팅합니다.")
+            println("warning: 기존값이 $dd Double입니다. 강제로 Long으로 캐스팅합니다.")
             tt = 0; ll = dd.toLong() - b
         } else ll -= b
         return ll
@@ -74,7 +115,7 @@ class Calculator {
 
     fun multiplyLongToLong(b: Long): Long {
         if (tt == 1) {
-            println("warning: 기존값이 Double입니다. 강제로 Long으로 캐스팅합니다.")
+            println("warning: 기존값이 $dd Double입니다. 강제로 Long으로 캐스팅합니다.")
             tt = 0; ll = dd.toLong() * b
         } else ll *= b
         return ll
@@ -87,6 +128,14 @@ class Calculator {
         return dd
     }
 
+    fun divideLongToLong(b: Long): Long {
+        if (tt == 1) {
+            println("warning: 기존값이 $dd Double입니다. 강제로 Long으로 캐스팅합니다.")
+            tt = 0; ll = dd.toLong() / b
+        } else ll /= b
+        return ll
+    }
+
     fun mod(b: Double): Double {
         if (tt == 0) {
             tt = 1; dd = ll % b
@@ -96,11 +145,90 @@ class Calculator {
 
     fun modLongToLong(b: Long): Long {
         if (tt == 1) {
-            println("warning: 기존값이 Double입니다. 강제로 Long으로 캐스팅합니다.")
+            println("warning: 기존값이 $dd Double입니다. 강제로 Long으로 캐스팅합니다.")
             tt = 0; ll = dd.toLong() % b
         } else ll %= b
         return ll
     }
 
-    //todo a o b
+
+    fun add(a: Double, b: Double): Double {
+        tt = 1; dd = a + b; return dd
+    }
+
+    fun add(a: Double, b: Long): Double {
+        tt = 1; dd = a + b; return dd
+    }
+
+    fun add(a: Long, b: Double): Double {
+        tt = 1; dd = a + b; return dd
+    }
+
+    fun add(a: Long, b: Long): Long {
+        tt = 0; ll = a + b; return ll
+    }
+
+    fun subtract(a: Double, b: Double): Double {
+        tt = 1; dd = a - b; return dd
+    }
+
+    fun subtract(a: Double, b: Long): Double {
+        tt = 1; dd = a - b; return dd
+    }
+
+    fun subtract(a: Long, b: Double): Double {
+        tt = 1; dd = a - b; return dd
+    }
+
+    fun subtract(a: Long, b: Long): Long {
+        tt = 0; ll = a - b; return ll
+    }
+
+    fun multiply(a: Double, b: Double): Double {
+        tt = 1; dd = a * b; return dd
+    }
+
+    fun multiply(a: Double, b: Long): Double {
+        tt = 1; dd = a * b; return dd
+    }
+
+    fun multiply(a: Long, b: Double): Double {
+        tt = 1; dd = a * b; return dd
+    }
+
+    fun multiply(a: Long, b: Long): Long {
+        tt = 0; ll = a * b; return ll
+    }
+
+    fun divide(a: Double, b: Double): Double {
+        tt = 1; dd = a / b; return dd
+    }
+
+    fun divide(a: Double, b: Long): Double {
+        tt = 1; dd = a / b; return dd
+    }
+
+    fun divide(a: Long, b: Double): Double {
+        tt = 1; dd = a / b; return dd
+    }
+
+    fun divide(a: Long, b: Long): Long {
+        tt = 0; ll = a / b; return ll
+    }
+
+    fun mod(a: Double, b: Double): Double {
+        tt = 1; dd = a / b; return dd
+    }
+
+    fun mod(a: Double, b: Long): Double {
+        tt = 1; dd = a / b; return dd
+    }
+
+    fun mod(a: Long, b: Double): Double {
+        tt = 1; dd = a / b; return dd
+    }
+
+    fun mod(a: Long, b: Long): Long {
+        tt = 0; ll = a / b; return ll
+    }
 }
