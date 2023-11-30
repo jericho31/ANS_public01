@@ -9,6 +9,8 @@ fun main() {
     println("종료하려면 q 또는 Q를 입력하세요.")
     println("==========================")
 
+    //todo 루프만 메인에서 돌리고 입력값 처리 전체는 계산기로 옮겨야.
+
     val calc = Calculator()
     var s: String
     lateinit var sl: List<String>
@@ -27,13 +29,17 @@ fun main() {
 
         if (sl[0].toDoubleOrNull() != null) {
             if (sl[0].toLongOrNull() != null) {
+                if (sl.size < 2) {
+                    println("error: 숫자 뒤에 입력값이 없습니다.")
+                    continue
+                }
                 val o = sl[1][0]
                 if (o !in calc.operators) {
                     println("error: 지원하는 연산자가 아닙니다. o = $o")
                     continue
                 }
                 if (sl.size < 3) {
-                    println("error: 연산자 뒤에 입력값이 없습니다. $sl")
+                    println("error: 연산자 뒤에 입력값이 없습니다.")
                     continue
                 }
                 if (sl[2].toDoubleOrNull() == null) {
