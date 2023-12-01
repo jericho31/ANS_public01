@@ -34,8 +34,7 @@ class Calculator {
                 val o = sl[1][0]
                 if (o !in operators) return "error: 지원하는 연산자가 아닙니다. o = $o"
                 if (sl.size < 3) return "error: 연산자 뒤에 입력값이 없습니다."
-                val b = sl[2].toDoubleOrNull()
-                if (b == null) return "error: 두 번째 숫자를 잘못 입력했습니다. ${sl[2]}"
+                val b = sl[2].toDoubleOrNull() ?: return "error: 두 번째 숫자를 잘못 입력했습니다. ${sl[2]}"
                 operate(sl[0].toDouble(), o, b)
             }
         } else {  // 연산자 + 숫자
@@ -63,7 +62,7 @@ class Calculator {
             else -> throw IllegalArgumentException("error: 잘못된 연산자: $o")
         }
 
-    fun operate(o: Char, b: Long): Unit {
+    fun operate(o: Char, b: Long) {
         if (tt == 1) {
             operate(o, b.toDouble())
             return
@@ -221,13 +220,13 @@ class Calculator {
         tt = 1; dd = a / b; return dd
     }
 
-    fun mod(a: Double, b: Long): Double {
-        tt = 1; dd = a / b; return dd
-    }
-
-    fun mod(a: Long, b: Double): Double {
-        tt = 1; dd = a / b; return dd
-    }
+//    fun mod(a: Double, b: Long): Double {
+//        tt = 1; dd = a / b; return dd
+//    }
+//
+//    fun mod(a: Long, b: Double): Double {
+//        tt = 1; dd = a / b; return dd
+//    }
 
     fun mod(a: Long, b: Long): Long {
         tt = 0; ll = a / b; return ll
