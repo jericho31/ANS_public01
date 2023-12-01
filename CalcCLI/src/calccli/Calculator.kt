@@ -2,16 +2,16 @@ package calccli
 
 class Calculator {
     /** 0: Long, 1: Double */
-    var tt = 0
+    var curtype = 0
     var ll = 0L
     var dd = .0
     val operators = "+-*/%"
 
     fun clear() {
-        tt = 0; ll = 0L; dd = .0
+        curtype = 0; ll = 0L; dd = .0
     }
 
-    fun prnval() = println(if (tt == 0) ll else dd)
+    fun prnval() = println(if (curtype == 0) ll else dd)
 
     fun implement(s: String): String {
         val sl = s.split(" ")
@@ -49,7 +49,7 @@ class Calculator {
                 operate(o, b)
             }
         }
-        return if (tt == 0) ll.toString() else dd.toString()
+        return if (curtype == 0) ll.toString() else dd.toString()
     }
 
     fun operate(o: Char, b: Double): Double =
@@ -63,7 +63,7 @@ class Calculator {
         }
 
     fun operate(o: Char, b: Long) {
-        if (tt == 1) {
+        if (curtype == 1) {
             operate(o, b.toDouble())
             return
         }
@@ -80,19 +80,19 @@ class Calculator {
     fun operate(a: Double, o: Char, b: Double): Double =
         when (o) {
             '+' -> {
-                tt = 1; dd = AddOperation.op(a, b); dd
+                curtype = 1; dd = AddOperation.op(a, b); dd
             }
 
             '-' -> {
-                tt = 1; dd = SubtractOperation.op(a, b); dd
+                curtype = 1; dd = SubtractOperation.op(a, b); dd
             }
 
             '*' -> {
-                tt = 1; dd = MultiplyOperation.op(a, b); dd
+                curtype = 1; dd = MultiplyOperation.op(a, b); dd
             }
 
             '/' -> {
-                tt = 1; dd = DivideOperation.op(a, b); dd
+                curtype = 1; dd = DivideOperation.op(a, b); dd
             }
 
             '%' -> mod(a, b)
@@ -122,19 +122,19 @@ class Calculator {
     fun operate(a: Long, o: Char, b: Long): Long =
         when (o) {
             '+' -> {
-                tt = 0; ll = AddOperation.op(a, b); ll
+                curtype = 0; ll = AddOperation.op(a, b); ll
             }
 
             '-' -> {
-                tt = 0; ll = SubtractOperation.op(a, b); ll
+                curtype = 0; ll = SubtractOperation.op(a, b); ll
             }
 
             '*' -> {
-                tt = 0; ll = MultiplyOperation.op(a, b); ll
+                curtype = 0; ll = MultiplyOperation.op(a, b); ll
             }
 
             '/' -> {
-                tt = 0; ll = DivideOperation.op(a, b); ll
+                curtype = 0; ll = DivideOperation.op(a, b); ll
             }
 
             '%' -> mod(a, b)
@@ -142,82 +142,82 @@ class Calculator {
         }
 
     fun add(b: Double): Double {
-        if (tt == 0) {
-            tt = 1; dd = AddOperation.op(ll, b)
+        if (curtype == 0) {
+            curtype = 1; dd = AddOperation.op(ll, b)
         } else dd = AddOperation.op(dd, b)
         return dd
     }
 
     fun addLongToLong(b: Long): Long {
-        if (tt == 1) {
+        if (curtype == 1) {
             println("warning: 기존값이 $dd Double입니다. 강제로 Long으로 캐스팅합니다.")
-            tt = 0; ll = AddOperation.op(dd.toLong(), b)
+            curtype = 0; ll = AddOperation.op(dd.toLong(), b)
         } else ll = AddOperation.op(ll, b)
         return ll
     }
 
     fun subtract(b: Double): Double {
-        if (tt == 0) {
-            tt = 1; dd = SubtractOperation.op(ll, b)
+        if (curtype == 0) {
+            curtype = 1; dd = SubtractOperation.op(ll, b)
         } else dd = SubtractOperation.op(dd, b)
         return dd
     }
 
     fun subtractLongToLong(b: Long): Long {
-        if (tt == 1) {
+        if (curtype == 1) {
             println("warning: 기존값이 $dd Double입니다. 강제로 Long으로 캐스팅합니다.")
-            tt = 0; ll = SubtractOperation.op(dd.toLong(), b)
+            curtype = 0; ll = SubtractOperation.op(dd.toLong(), b)
         } else ll = SubtractOperation.op(ll, b)
         return ll
     }
 
     fun multiply(b: Double): Double {
-        if (tt == 0) {
-            tt = 1; dd = MultiplyOperation.op(ll, b)
+        if (curtype == 0) {
+            curtype = 1; dd = MultiplyOperation.op(ll, b)
         } else dd = MultiplyOperation.op(dd, b)
         return dd
     }
 
     fun multiplyLongToLong(b: Long): Long {
-        if (tt == 1) {
+        if (curtype == 1) {
             println("warning: 기존값이 $dd Double입니다. 강제로 Long으로 캐스팅합니다.")
-            tt = 0; ll = MultiplyOperation.op(dd.toLong(), b)
+            curtype = 0; ll = MultiplyOperation.op(dd.toLong(), b)
         } else ll = MultiplyOperation.op(ll, b)
         return ll
     }
 
     fun divide(b: Double): Double {
-        if (tt == 0) {
-            tt = 1; dd = DivideOperation.op(ll, b)
+        if (curtype == 0) {
+            curtype = 1; dd = DivideOperation.op(ll, b)
         } else dd = DivideOperation.op(dd, b)
         return dd
     }
 
     fun divideLongToLong(b: Long): Long {
-        if (tt == 1) {
+        if (curtype == 1) {
             println("warning: 기존값이 $dd Double입니다. 강제로 Long으로 캐스팅합니다.")
-            tt = 0; ll = DivideOperation.op(dd.toLong(), b)
+            curtype = 0; ll = DivideOperation.op(dd.toLong(), b)
         } else ll = DivideOperation.op(ll, b)
         return ll
     }
 
     fun mod(b: Double): Double {
-        if (tt == 0) {
-            tt = 1; dd = ll % b
+        if (curtype == 0) {
+            curtype = 1; dd = ll % b
         } else dd %= b
         return dd
     }
 
     fun modLongToLong(b: Long): Long {
-        if (tt == 1) {
+        if (curtype == 1) {
             println("warning: 기존값이 $dd Double입니다. 강제로 Long으로 캐스팅합니다.")
-            tt = 0; ll = dd.toLong() % b
+            curtype = 0; ll = dd.toLong() % b
         } else ll %= b
         return ll
     }
 
     fun mod(a: Double, b: Double): Double {
-        tt = 1; dd = a / b; return dd
+        curtype = 1; dd = a / b; return dd
     }
 
 //    fun mod(a: Double, b: Long): Double {
@@ -229,6 +229,6 @@ class Calculator {
 //    }
 
     fun mod(a: Long, b: Long): Long {
-        tt = 0; ll = a / b; return ll
+        curtype = 0; ll = a / b; return ll
     }
 }
