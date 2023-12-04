@@ -8,6 +8,13 @@ class Kiosk {
         initItemListList()
     }
 
+    fun initItemListList() {
+        itemListList.add(ItemList("버거류", "맘스터치 버거는 다 맛있습니다.", createBurgers()))
+        itemListList.add(ItemList("치킨류", "맘스터치 치킨은 다 맛있습니다.", createChickens()))
+        itemListList.add(ItemList("음료류", "맘스터치 음료는 다 맛있습니다.", createDrinks()))
+        itemListList.add(ItemList("사이드류", "맘스터치 사이드는 다 맛있습니다.", createSides()))
+    }
+
     fun run() {
         while (!isTerminate) page_1()
         println("프로그램을 종료합니다.")
@@ -67,12 +74,5 @@ class Kiosk {
     fun page_AddBasket(item: Item) {
         //todo Lv4 장바구니에 추가할까요
         println("${item.name} 주문되었습니다.")
-    }
-
-    fun initItemListList() {
-        itemListList.add(ItemList("버거류", "맘스터치 버거는 다 맛있습니다.", createBurgers()))
-        itemListList.add(ItemList("치킨류", "맘스터치 치킨은 다 맛있습니다.", createChickens()))
-        itemListList.add(ItemList("음료류", "맘스터치 음료는 다 맛있습니다.", createDrinks()))
-        itemListList.add(ItemList("사이드류", "맘스터치 사이드는 다 맛있습니다.", createSides()))
     }
 }
