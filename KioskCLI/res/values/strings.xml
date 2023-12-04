@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">myMBTI_Test</string>
+    <!-- 질문1 -->
+    <string name="question1_title">외향형 - 내향형 (E-I)</string>
+    <string name="question1_1">Q1. 데이트가 없는 주말에 나는</string>
+    <string name="question1_1_answer1">단톡에 연락해서 친구들과 약속을 잡는다</string>
+    <string name="question1_1_answer2">침대랑 하루 종일 물아일체가 된다</string>
+
+    <string name="burger0_name">싸이버거</string>
+    <string name="burger0_price">4600</string>
+    <string name="burger0_price_set">6900</string>
+    <string name="burger0_detail">바삭하고 매콤한 치킨 패티와 신선한 양상추가 조화를 이루는 맘스터치 시그니처 버거</string>
+
+    <string name="burger1_name">인크레더블 버거</string>
+    <string name="burger1_price">5700</string>
+    <string name="burger1_price_set">8000</string>
+    <string name="burger1_detail">프리미엄 더블햄, 에그프라이, 통다리살 패티에 아삭아삭한 양상추와 양파까지, 풍성한 버거</string>
+
+</resources>
