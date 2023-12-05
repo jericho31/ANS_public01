@@ -64,6 +64,7 @@ class Kiosk {
                     } else {
                         orderList.clear()
                         println("주문을 취소합니다.")
+                        delay(1)
                         break
                     }
                 }
@@ -107,11 +108,13 @@ class Kiosk {
                     orderList.add(item)
                     println("${item.name} 가 장바구니에 추가되었습니다.")
                     println("현재 합계: ${orderList.sumOf { it.price }}")
+                    delay(1)
                     break
                 }
 
                 2 -> {
                     println("취소되었습니다.")
+                    delay(1)
                     break
                 }
 
@@ -147,6 +150,7 @@ class Kiosk {
                         println("주문되었습니다. 현재 잔액은 ${Cashcard.money}원입니다.")
                         orderList.clear()
                     }
+                    delay(3)
                     break
                 }
 
@@ -155,5 +159,14 @@ class Kiosk {
                 else -> println("잘못된 입력입니다: $s")
             }
         }
+    }
+
+    fun delay(sec: Int) {
+        print("  ...waiting...")
+        (sec downTo 1).forEach {
+            print(" $it")
+            Thread.sleep(999)
+        }
+        println()
     }
 }
