@@ -3,6 +3,7 @@ package kioskcli
 class Kiosk {
     var itemListList = ArrayList<ItemList>()
     var isTerminate = false
+    var orderList = ArrayList<Item>()
 
     init {
         initItemListList()
@@ -28,12 +29,16 @@ class Kiosk {
         itemListList.forEachIndexed { index, itemList ->
             println("${index + 1}. ${itemList.name}\t| ${itemList.detail}")
         }
+        if (orderList.isNotEmpty()) {
+            println("[ 주문 메뉴 ]")
+            println("${itemListList.size + 1}. 주문\t\t| 장바구니를 확인 후 주문합니다.")
+            println("${itemListList.size + 2}. 취소\t\t| 진행중인 주문을 취소합니다.")
+        }
         println("0. 종료\t\t| 프로그램 종료")
 
         while (true) {
             val s = readln()
-            when (val n = s.toIntOrNull()) {
-                null -> println("잘못된 입력입니다: $s")
+            when (val n = s.toIntOrNull() ?: -1) {
                 0 -> {
                     isTerminate = true
                     break
@@ -44,6 +49,25 @@ class Kiosk {
                     break
                 }
 
+                itemListList.size + 1 -> {
+                    if (orderList.isEmpty()) {
+                        println("잘못된 입력입니다: $s")
+                    } else {
+                        page_order()
+                        break
+                    }
+                }
+
+                itemListList.size + 2 -> {
+                    if (orderList.isEmpty()) {
+                        println("잘못된 입력입니다: $s")
+                    } else {
+                        orderList.clear()
+                        println("주문을 취소합니다.")
+                        break
+                    }
+                }
+
                 else -> println("잘못된 입력입니다: $s")
             }
         }
@@ -52,14 +76,13 @@ class Kiosk {
     fun page_2(itemList: ItemList) {
         println("[ ${itemList.name} 메뉴 ]")
         itemList.lst.forEachIndexed { index, item ->
-            println("${index + 1}. ${item.name}\t| ${item.detail}")
+            println("${index + 1}. ${item.info()}")
         }
-        println("0. 뒤로가기\t\t| 뒤로가기")
+        println("0. 뒤로가기")
 
         while (true) {
             val s = readln()
-            when (val n = s.toIntOrNull()) {
-                null -> println("잘못된 입력입니다: $s")
+            when (val n = s.toIntOrNull() ?: -1) {
                 0 -> break
                 in 1..itemList.size() -> {
                     page_AddBasket(itemList[n - 1])
@@ -72,7 +95,65 @@ class Kiosk {
     }
 
     fun page_AddBasket(item: Item) {
-        //todo Lv4 장바구니에 추가할까요
-        println("${item.name} 주문되었습니다.")
+        println("\"${item.info()}\"")
+        println("위 메뉴를 장바구니에 추가하시겠습니까?")
+        println("현재 합계: ${orderList.sumOf { it.price }}")
+        println("1. 확인    2. 취소")
+
+        while (true) {
+            val s = readln()
+            when (s.toIntOrNull() ?: -1) {
+                1 -> {
+                    orderList.add(item)
+                    println("${item.name} 가 장바구니에 추가되었습니다.")
+                    println("현재 합계: ${orderList.sumOf { it.price }}")
+                    break
+                }
+
+                2 -> {
+                    println("취소되었습니다.")
+                    break
+                }
+
+                else -> println("잘못된 입력입니다: $s")
+            }
+        }
+    }
+
+    fun page_order() {
+        val total = orderList.fold(0) { acc, item -> acc + item.price }
+
+        println("아래와 같이 주문 하시겠습니까?")
+        println("[ 주문 목록 ]")
+        orderList.sortBy { it.name }
+        orderList.forEachIndexed { index, item ->
+            println("${index + 1}. ${item.info()}")
+        }
+        println("합계: $total 원")
+        println()
+        println("1. 주문    2 또는 0. 뒤로가기")
+
+        while (true) {
+            val s = readln()
+            when (s.toIntOrNull() ?: -1) {
+                1 -> {
+                    if (Cashcard.money < total) {
+                        println("현재 잔액은 ${Cashcard.money}원으로 ${total - Cashcard.money}원이 부족해서 주문할 수 없습니다.")
+                        //todo 주문 취소
+                        println("처음부터 다시 시도해주십시오.")
+                        orderList.clear()
+                    } else {
+                        Cashcard.money -= total
+                        println("주문되었습니다. 현재 잔액은 ${Cashcard.money}원입니다.")
+                        orderList.clear()
+                    }
+                    break
+                }
+
+                2, 0 -> break
+
+                else -> println("잘못된 입력입니다: $s")
+            }
+        }
     }
 }

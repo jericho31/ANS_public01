@@ -23,4 +23,7 @@ open class Item {
     fun displayInfo() {
         println("$name | W $price | $detail")
     }
+
+    fun info(): String =
+        "$name\t| $price 원\t| $detail"
 }
