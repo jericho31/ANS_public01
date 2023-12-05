@@ -139,7 +139,7 @@ class Kiosk {
                 1 -> {
                     if (Cashcard.money < total) {
                         println("현재 잔액은 ${Cashcard.money}원으로 ${total - Cashcard.money}원이 부족해서 주문할 수 없습니다.")
-                        //todo 주문 취소
+                        // TODO: 주문 취소
                         println("처음부터 다시 시도해주십시오.")
                         orderList.clear()
                     } else {
