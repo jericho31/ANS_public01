@@ -13,7 +13,7 @@ class Kiosk {
     var basket = ArrayList<Item>()
     var orderList = ArrayList<ArrayList<Item>>()
     var job: Job
-    val t1 = Mytime.parseTime("00:10:00")
+    val t1 = Mytime.parseTime("23:30:00")
     val t2 = Mytime.parseTime("23:50:00")
 
     fun isImpossibleTime(): Boolean = Mytime.nowTime() in t1..t2
@@ -46,7 +46,7 @@ class Kiosk {
 
     fun page_1() {
         println("=================================")
-        println("SHAKESHACK 키오스크입니다.")
+        println("맘스터치 키오스크입니다.")
         println("아래 메뉴판을 보시고 메뉴를 골라 입력해주세요.")
         println("[ 맘스터치 메뉴 ]")
         itemListList.forEachIndexed { index, itemList ->
