@@ -23,6 +23,10 @@ class SignInActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
+
+        val intent = Intent(this, SignUpChallengeActivity::class.java)
+//                startActivity(intent)
+        resultLauncher.launch(intent)
     }
 
     private fun toastShort(s: String) = Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
@@ -48,7 +52,8 @@ class SignInActivity : AppCompatActivity() {
             }
 
             R.id.btn_signup -> {
-                val intent = Intent(this, SignUpActivity::class.java)
+//                val intent = Intent(this, SignUpActivity::class.java)
+                val intent = Intent(this, SignUpChallengeActivity::class.java)
 //                startActivity(intent)
                 resultLauncher.launch(intent)
             }
