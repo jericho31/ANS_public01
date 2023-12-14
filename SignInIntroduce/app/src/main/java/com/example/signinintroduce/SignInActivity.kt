@@ -1,13 +1,25 @@
 package com.example.signinintroduce
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 
 class SignInActivity : AppCompatActivity() {
+    val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val etid = findViewById<EditText>(R.id.et_id)
+                val etpw = findViewById<EditText>(R.id.et_password)
+                etid.setText(it.data?.getStringExtra("id") ?: "")
+                etpw.setText(it.data?.getStringExtra("password") ?: "")
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
@@ -37,7 +49,8 @@ class SignInActivity : AppCompatActivity() {
 
             R.id.btn_signup -> {
                 val intent = Intent(this, SignUpActivity::class.java)
-                startActivity(intent)
+//                startActivity(intent)
+                resultLauncher.launch(intent)
             }
         }
     }

@@ -22,6 +22,10 @@ class SignUpActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
+            intent.putExtra("id", etid.text.toString())
+            intent.putExtra("password", etpw.text.toString())
+            setResult(RESULT_OK, intent)
+
             finish()
         }
     }
