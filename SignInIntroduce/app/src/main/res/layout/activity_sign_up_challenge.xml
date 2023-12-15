@@ -31,7 +31,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:text="TextView"
         android:textColor="@color/design_default_color_error" />
 
     <TextView
@@ -42,6 +41,7 @@
         android:text="이메일"
         android:textSize="18sp" />
 
+    <!-- TODO: 컨스트레인트로 바꾸고 가운데 @ 넣고 겹쳐서 변경 -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -69,7 +69,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:text="TextView"
         android:textColor="@color/design_default_color_error" />
 
     <TextView
@@ -94,7 +93,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:text="TextView"
         android:textColor="@color/design_default_color_error" />
 
     <TextView
@@ -119,7 +117,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:text="TextView"
         android:textColor="@color/design_default_color_error" />
 
     <Button
