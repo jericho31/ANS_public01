@@ -16,11 +16,21 @@ import androidx.core.widget.addTextChangedListener
 import java.util.regex.Pattern
 
 // TODO: to xml
-// 입력 길이도 정규식에서 체크할 수 있지만 메세지를 달리 하려면 체크하는 쪽에서 해야 함.
+// 입력 길이도 정규식에서 체크할 수 있지만 메세지를 달리 하려면 체크하는 쪽에서도 해야 함.
+//val sample = """^[0-9a-zA-Z!@#$%^+\-=]*$"""  // 참고용
+//val sample = """^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^+\-=])(?=\S+$).*$"""  // 참고용
+//val sample = "^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,20}$"  // 참고용
+//val sample = "^(?=.*[A-Za-z])(?=.*[$@$!%*#?&.])[A-Za-z$@$!%*#?&.]{8,20}$"  // 참고용
+//val sample = "^(?=.*[0-9])(?=.*[$@$!%*#?&.])[[0-9]$@$!%*#?&.]{8,20}$"  // 참고용
 val pwInputRegex = """^[0-9a-zA-Z!"#${'$'}%&'()*+,-./:;<=>?@[₩]^_`{|}~]*$"""
+val pwFinalRegex =
+    """^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!"#${'$'}%&'()*+,-./:;<=>?@[₩]^_`{|}~])[0-9a-zA-Z!"#${'$'}%&'()*+,-./:;<=>?@[₩]^_`{|}~]{8,16}$"""
 val pwInputPattern = Pattern.compile(pwInputRegex)
+val pwFinalPattern = Pattern.compile(pwFinalRegex)
 
 class SignUpChallengeActivity : AppCompatActivity() {
+    private val TAG = "mine"
+
     companion object {
         // TODO: 나중에 xml로.
         val mails = arrayOf("gmail.com", "kakao.com", "naver.com", "직접 입력")
@@ -36,27 +46,31 @@ class SignUpChallengeActivity : AppCompatActivity() {
     private val tvVerifyWarn by lazy { findViewById<TextView>(R.id.tv_chall_verify_warn) }
     private val btn by lazy { findViewById<Button>(R.id.btn_chall_signup) }
 
+    private var okName = false
+    private var okMail = false
+    private var okPw = false
+    private var okVerify = false
     private var password = ""
     private var posCursor = 0
 
     private val watcher by lazy {
         object : TextWatcher {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                Log.d("mine", "before: ${etPw.selectionStart}, ${etPw.selectionEnd}")
+                Log.d(TAG, "before: ${etPw.selectionStart}, ${etPw.selectionEnd}")
                 posCursor = etPw.selectionStart
             }
 
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 Log.d(
-                    "mine",
+                    TAG,
                     "on: ${p0}/ $p1, $p2, $p3 / ${etPw.selectionStart}, ${etPw.selectionEnd}"
                 )
             }
 
             override fun afterTextChanged(p0: Editable?) {
-                Log.d("mine", "after: ${etPw.selectionStart}, ${etPw.selectionEnd}")
+                Log.d(TAG, "after: ${etPw.selectionStart}, ${etPw.selectionEnd}")
                 check(etPw)
-                Log.d("mine", "== back from check ==")
+                Log.d(TAG, "== back from check ==")
             }
         }
     }
@@ -79,29 +93,29 @@ class SignUpChallengeActivity : AppCompatActivity() {
         }
 //        etPw.addTextChangedListener {  // 터짐
 //            // 이미 바뀌고 찍힘.
-//            Log.d("mine", "etPw.addTextChangedListener: ${etPw.selectionStart}, ${etPw.selectionEnd}")
+//            Log.d(TAG, "etPw.addTextChangedListener: ${etPw.selectionStart}, ${etPw.selectionEnd}")
 //            posCursor = etPw.selectionEnd
 //            check(etPw)
 //        }
         etPw.addTextChangedListener(watcher)
 //        etPw.addTextChangedListener(object : TextWatcher {  // watcher로 만듦. remove, add 하려고.
 //            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                Log.d("mine", "before: ${etPw.selectionStart}, ${etPw.selectionEnd}")
+//                Log.d(TAG, "before: ${etPw.selectionStart}, ${etPw.selectionEnd}")
 //                posCursor = etPw.selectionStart
 //            }
 //
 //            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 ////                if (p0!![p2 - 1] == 'q') etPw.setText("")
 //                Log.d(
-//                    "mine",
+//                    TAG,
 //                    "on: ${p0}/ $p1, $p2, $p3 / ${etPw.selectionStart}, ${etPw.selectionEnd}"
 //                )
 //            }
 //
 //            override fun afterTextChanged(p0: Editable?) {
-//                Log.d("mine", "after: ${etPw.selectionStart}, ${etPw.selectionEnd}")
+//                Log.d(TAG, "after: ${etPw.selectionStart}, ${etPw.selectionEnd}")
 //                check(etPw)
-//                Log.d("mine", "== back from check ==")
+//                Log.d(TAG, "== back from check ==")
 //            }
 //        })
         etVerify.addTextChangedListener {
@@ -145,26 +159,37 @@ class SignUpChallengeActivity : AppCompatActivity() {
     var checkCount = 0
     fun check(v: View) {
         Log.d(
-            "mine",
+            TAG,
             "v: ${
                 v.toString().run { substring(length - 36, length - 15) }
             }, check count: ${++checkCount}"
         )
         when (v) {
             etName -> {
-                if (etName.text.isEmpty()) tvNameWarn.text = "이름을 입력해주세요."
-                else tvNameWarn.text = ""
+                if (etName.text.isEmpty()) {
+                    tvNameWarn.text = "이름을 입력해주세요."
+                    okName = false
+                } else {
+                    tvNameWarn.text = ""
+                    okName = true
+                }
             }
 
             etMail -> {
-                if (etMail.text.isEmpty()) tvMailWarn.text = "이메일을 입력해주세요."
-                else tvMailWarn.text = ""
+                if (etMail.text.isEmpty()) {
+                    tvMailWarn.text = "이메일을 입력해주세요."
+                    okMail = false
+                } else {
+                    tvMailWarn.text = ""
+                    okMail = true
+                }
             }
 
             etPw -> {
                 val pw = etPw.text.toString()
                 if (etPw.text.isEmpty()) {
                     tvPwWarn.text = "비밀번호를 입력해주세요."
+                    okPw = false
                 } else if (!pwInputPattern.matcher(pw).matches()) {
                     toastShort("입력할 수 없는 문자입니다.")
                     // TODO: InputFilter
@@ -175,27 +200,34 @@ class SignUpChallengeActivity : AppCompatActivity() {
                     return
                 } else if (pw.length < 8) {
                     tvPwWarn.text = "비밀번호는 8자리 이상이어야 합니다."
+                    okPw = false
                 } else if (pw.length > 16) {
                     tvPwWarn.text = "비밀번호는 16자리 이하여야 합니다."
+                    okPw = false
+                } else if (!pwFinalPattern.matcher(pw).matches()) {
+                    tvPwWarn.text = "영문, 숫자, 특수문자 혼합 8~16자"
+                    okPw = false
+                    // TODO: 동일한 문자를 많이 포함한 경우, 이름이나 메일 등 개인정보.
                 } else {
                     tvPwWarn.text = ""
+                    okPw = true
                 }
                 password = pw
-                etName.setText(password)
+                etName.setText(password)  //ddd
             }
 
             etVerify -> {
-                if (etVerify.text.isEmpty()) {
-                    tvVerifyWarn.text = "비밀번호를 한 번 더 입력해주세요."
-                    return
-                }
-                if (!etVerify.text.contentEquals(etPw.text)) {
+                if (etVerify.text.contentEquals(etPw.text)) {
+                    tvVerifyWarn.text = ""
+                    okVerify = true
+                } else {
                     tvVerifyWarn.text = "비밀번호가 일치하지 않습니다."
-                    return
+                    okVerify = false
                 }
-                tvVerifyWarn.text = ""
             }
         }
+
+        btn.isEnabled = okName && okMail && okPw && okVerify
     }
 
     private fun toastShort(s: String) = Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
