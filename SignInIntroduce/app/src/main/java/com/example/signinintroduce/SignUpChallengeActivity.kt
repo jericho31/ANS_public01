@@ -61,7 +61,10 @@ class SignUpChallengeActivity : AppCompatActivity() {
     private var okPw = false
     private var okVerify = false
 
-    private val anim = AlphaAnimation(0.125f, 1.0f)
+    private val anim = AlphaAnimation(0.125f, 0.625f).apply {
+        duration = 100L
+        repeatCount = 3
+    }
     private val pwWatcher by lazy {
         object : TextWatcher {
             private var beforePw = ""
@@ -89,7 +92,6 @@ class SignUpChallengeActivity : AppCompatActivity() {
             // 한글은 조합때문에 입력받고 무시하기 어려울텐데, inputType textPassword 가 알아서 막아주네. 원표시₩도 막혀있네?
             override fun afterTextChanged(s: Editable?) {
                 Log.d(TAG, "after:: $s/selection: ${etPw.selectionStart}, ${etPw.selectionEnd}")
-//                val pw = etPw.text.toString()
                 if (!pwInputPattern.matcher(etPw.text.toString()).matches()) {
                     // warn 바꾸는 쪽으로. 그냥 바꾸면 잘 안보일듯. 깜빡여야. 그러려면 코루틴 블라킹으로...?
                     // AlphaAnimation 이라는 좋은 기능이 있었다. 역시 구글갓
@@ -117,9 +119,6 @@ class SignUpChallengeActivity : AppCompatActivity() {
 
         // 처음에 기본으로 첫번째꺼가 선택되어 있는 이유는 어레이어댑터라서 그런가?
         spinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mails)
-        anim.startOffset = 16L
-        anim.duration = 100L
-        anim.repeatCount = 3
 
         etName.addTextChangedListener {
             check(etName)

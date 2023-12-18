@@ -41,7 +41,7 @@
         android:text="이메일"
         android:textSize="18sp" />
 
-    <!-- TODO: 컨스트레인트로 바꾸고 가운데 @ 넣고 겹쳐서 변경 -->
+    <!-- 컨스트레인트 아니고 리니어로도 되네. gone / invisible. gone으로. -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
