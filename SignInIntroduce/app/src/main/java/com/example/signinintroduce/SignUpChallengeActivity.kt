@@ -1,6 +1,5 @@
 package com.example.signinintroduce
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +11,7 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import java.util.regex.Pattern
 
@@ -22,9 +22,9 @@ import java.util.regex.Pattern
 //val sample = "^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,20}$"  // 참고용
 //val sample = "^(?=.*[A-Za-z])(?=.*[$@$!%*#?&.])[A-Za-z$@$!%*#?&.]{8,20}$"  // 참고용
 //val sample = "^(?=.*[0-9])(?=.*[$@$!%*#?&.])[[0-9]$@$!%*#?&.]{8,20}$"  // 참고용
-val pwInputRegex = """^[0-9a-zA-Z!"#${'$'}%&'()*+,-./:;<=>?@[₩]^_`{|}~]*$"""
+val pwInputRegex = """^[0-9a-zA-Z!"#$%&'()*+,-./:;<=>?@\[₩\]^_`{|}~]*$"""
 val pwFinalRegex =
-    """^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!"#${'$'}%&'()*+,-./:;<=>?@[₩]^_`{|}~])[0-9a-zA-Z!"#${'$'}%&'()*+,-./:;<=>?@[₩]^_`{|}~]{8,16}$"""
+    """^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!"#${'$'}%&'()*+,-./:;<=>?@\[₩\]^_`{|}~])[0-9a-zA-Z!"#${'$'}%&'()*+,-./:;<=>?@\[₩\]^_`{|}~]{8,16}$"""
 val pwInputPattern = Pattern.compile(pwInputRegex)
 val pwFinalPattern = Pattern.compile(pwFinalRegex)
 
@@ -42,6 +42,7 @@ class SignUpChallengeActivity : AppCompatActivity() {
     private val tvMailWarn by lazy { findViewById<TextView>(R.id.tv_chall_mail_warn) }
     private val etPw by lazy { findViewById<EditText>(R.id.et_chall_password) }
     private val tvPwWarn by lazy { findViewById<TextView>(R.id.tv_chall_password_warn) }
+    private val tvPwLength by lazy { findViewById<TextView>(R.id.tv_chall_password_length) }
     private val etVerify by lazy { findViewById<EditText>(R.id.et_chall_verify) }
     private val tvVerifyWarn by lazy { findViewById<TextView>(R.id.tv_chall_verify_warn) }
     private val btn by lazy { findViewById<Button>(R.id.btn_chall_signup) }
@@ -50,25 +51,46 @@ class SignUpChallengeActivity : AppCompatActivity() {
     private var okMail = false
     private var okPw = false
     private var okVerify = false
-    private var password = ""
-    private var posCursor = 0
 
-    private val watcher by lazy {
+    private val pwWatcher by lazy {
         object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                Log.d(TAG, "before: ${etPw.selectionStart}, ${etPw.selectionEnd}")
-                posCursor = etPw.selectionStart
+            private var beforePw = ""
+            private var beforeCursor = 0
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                Log.d(TAG, "before:: start: $start, count: $count, after: $after")
+                Log.d(TAG, "$s/selection: ${etPw.selectionStart}, ${etPw.selectionEnd}")
+                beforePw = etPw.text.toString()
+                beforeCursor = start
             }
 
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 Log.d(
                     TAG,
-                    "on: ${p0}/ $p1, $p2, $p3 / ${etPw.selectionStart}, ${etPw.selectionEnd}"
+                    "on:: start: $start, before: $before, count: $count"
+                )
+                Log.d(
+                    TAG,
+                    "$s/selection: ${etPw.selectionStart}, ${etPw.selectionEnd}"
                 )
             }
 
-            override fun afterTextChanged(p0: Editable?) {
-                Log.d(TAG, "after: ${etPw.selectionStart}, ${etPw.selectionEnd}")
+            // TODO: 사용자의 입력을 막아버리는 것은 UX상 좋지 않다. 안내를 해주는 편이 좋다.
+            // 한글은 어려울텐데, inputType textPassword 가 알아서 막아주네. 원표시₩도 막혀있네?
+            override fun afterTextChanged(s: Editable?) {
+                Log.d(TAG, "after:: $s/selection: ${etPw.selectionStart}, ${etPw.selectionEnd}")
+//                val pw = etPw.text.toString()
+                if (!pwInputPattern.matcher(etPw.text.toString()).matches()) {
+                    // TODO: warn 바꾸는 쪽으로.
+                    toastShort("입력할 수 없는 문자입니다.")
+                    // TODO: InputFilter
+                    etPw.removeTextChangedListener(this)
+                    etPw.setText(beforePw)
+                    etPw.setSelection(beforeCursor)
+                    etPw.addTextChangedListener(this)
+                    return
+                }
+                tvPwLength.text = "${etPw.text.length}/16"
                 check(etPw)
                 Log.d(TAG, "== back from check ==")
             }
@@ -97,7 +119,7 @@ class SignUpChallengeActivity : AppCompatActivity() {
 //            posCursor = etPw.selectionEnd
 //            check(etPw)
 //        }
-        etPw.addTextChangedListener(watcher)
+        etPw.addTextChangedListener(pwWatcher)
 //        etPw.addTextChangedListener(object : TextWatcher {  // watcher로 만듦. remove, add 하려고.
 //            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
 //                Log.d(TAG, "before: ${etPw.selectionStart}, ${etPw.selectionEnd}")
@@ -190,14 +212,6 @@ class SignUpChallengeActivity : AppCompatActivity() {
                 if (etPw.text.isEmpty()) {
                     tvPwWarn.text = "비밀번호를 입력해주세요."
                     okPw = false
-                } else if (!pwInputPattern.matcher(pw).matches()) {
-                    toastShort("입력할 수 없는 문자입니다.")
-                    // TODO: InputFilter
-                    etPw.removeTextChangedListener(watcher)
-                    etPw.setText(password)
-                    etPw.addTextChangedListener(watcher)
-                    etPw.setSelection(posCursor)
-                    return
                 } else if (pw.length < 8) {
                     tvPwWarn.text = "비밀번호는 8자리 이상이어야 합니다."
                     okPw = false
@@ -212,8 +226,7 @@ class SignUpChallengeActivity : AppCompatActivity() {
                     tvPwWarn.text = ""
                     okPw = true
                 }
-                password = pw
-                etName.setText(password)  //ddd
+                etName.setText(pw)  //ddd
             }
 
             etVerify -> {
