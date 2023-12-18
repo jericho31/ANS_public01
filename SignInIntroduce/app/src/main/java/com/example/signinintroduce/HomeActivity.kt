@@ -24,7 +24,7 @@ class HomeActivity : AppCompatActivity() {
         val tvmbti = findViewById<TextView>(R.id.tv_home_mbti)
         tvid.setText("아이디: $data_id")
         when (data_id) {
-            "default" -> {}
+            "admin" -> {}
             "spa001" -> {
                 ivhome.setImageResource(R.drawable.rtan)
                 tvname.setText("이름: 스파르타코딩이")
