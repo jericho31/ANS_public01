@@ -10,23 +10,19 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 
 class SignInActivity : AppCompatActivity() {
-    val resultLauncher =
+    private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                val etid = findViewById<EditText>(R.id.et_id)
-                val etpw = findViewById<EditText>(R.id.et_password)
-                etid.setText(it.data?.getStringExtra("id") ?: "")
-                etpw.setText(it.data?.getStringExtra("password") ?: "")
+                val etId = findViewById<EditText>(R.id.et_id)
+                val etPw = findViewById<EditText>(R.id.et_password)
+                etId.setText(it.data?.getStringExtra("id") ?: "")
+                etPw.setText(it.data?.getStringExtra("password") ?: "")
             }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
-
-        val intent = Intent(this, SignUpChallengeActivity::class.java)
-//                startActivity(intent)
-        resultLauncher.launch(intent)
     }
 
     private fun toastShort(s: String) = Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
@@ -34,13 +30,13 @@ class SignInActivity : AppCompatActivity() {
     fun doOnClick(v: View) {
         when (v.id) {
             R.id.btn_signin -> {
-                val etid = findViewById<EditText>(R.id.et_id)
-                val etpw = findViewById<EditText>(R.id.et_password)
-                if (etid.text.isEmpty()) {
+                val etId = findViewById<EditText>(R.id.et_id)
+                val etPw = findViewById<EditText>(R.id.et_password)
+                if (etId.text.isEmpty()) {
                     toastShort("아이디를 입력해야 합니다.")
                     return
                 }
-                if (etpw.text.isEmpty()) {
+                if (etPw.text.isEmpty()) {
                     toastShort("비밀번호를 입력해야 합니다.")
                     return
                 }

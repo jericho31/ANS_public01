@@ -42,7 +42,6 @@ class SignUpChallengeActivity : AppCompatActivity() {
         val mails = arrayOf("gmail.com", "kakao.com", "naver.com", "직접 입력")
     }
 
-    // TODO: 리스트로 모아넣고, 리스너 세팅 확장함수로 순회.
     private val etName: EditText by lazy { findViewById(R.id.et_chall_name) }
     private val tvNameWarn: TextView by lazy { findViewById(R.id.tv_chall_name_warn) }
     private val etMail: EditText by lazy { findViewById(R.id.et_chall_mail) }
@@ -56,8 +55,14 @@ class SignUpChallengeActivity : AppCompatActivity() {
     private val btn: Button by lazy { findViewById(R.id.btn_chall_signup) }
     private val spinner: Spinner by lazy { findViewById(R.id.spnr_chall_mail) }
 
+    // EditText 배열
+    private val arrET by lazy { arrayOf(etName, etMail, etDomain, etPw, etVerify) }
+
     private var okName = false
     private var okMail = false
+
+    // TODO: okDomain이랑 스피너 visible 두 조건 어떻게 잘 좀 통합
+    private var okDomain = false
     private var okPw = false
     private var okVerify = false
 
@@ -89,7 +94,8 @@ class SignUpChallengeActivity : AppCompatActivity() {
             }
 
             // 사용자의 입력을 막아버리는 것은 UX상 좋지 않다. 안내를 해주는 편이 좋다.
-            // 한글은 조합때문에 입력받고 무시하기 어려울텐데, inputType textPassword 가 알아서 막아주네. 원표시₩도 막혀있네?
+            // 한글은 조합때문에 입력받고 무시하기 어려울텐데, inputType textPassword 가 알아서 막아주네.
+            // 원표시₩는 그냥 입력이 안됨.
             override fun afterTextChanged(s: Editable?) {
                 Log.d(TAG, "after:: $s/selection: ${etPw.selectionStart}, ${etPw.selectionEnd}")
                 if (!pwInputPattern.matcher(etPw.text.toString()).matches()) {
@@ -120,21 +126,11 @@ class SignUpChallengeActivity : AppCompatActivity() {
         // 처음에 기본으로 첫번째꺼가 선택되어 있는 이유는 어레이어댑터라서 그런가?
         spinner.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mails)
 
-        etName.addTextChangedListener {
-            check(etName)
-        }
-        etMail.addTextChangedListener {
-            check(etMail)
-        }
+        arrET.forEach { et -> if ((et == etPw).not()) et.addTextChangedListener { check(et) } }
         etPw.addTextChangedListener(pwWatcher)
-        etVerify.addTextChangedListener {
-            check(etVerify)
-        }
-        val checkOnFocusOut = OnFocusChangeListener { v, hasFocus -> if (!hasFocus) check(v!!) }
-        etName.onFocusChangeListener = checkOnFocusOut
-        etMail.onFocusChangeListener = checkOnFocusOut
-        etPw.onFocusChangeListener = checkOnFocusOut
-        etVerify.onFocusChangeListener = checkOnFocusOut
+        val onFocusChangeListener =
+            OnFocusChangeListener { v, hasFocus -> if (!hasFocus) check(v!!) }
+        arrET.forEach { it.onFocusChangeListener = onFocusChangeListener }
 
         btn.setOnClickListener {
             if (spinner.isVisible) {
@@ -156,17 +152,18 @@ class SignUpChallengeActivity : AppCompatActivity() {
                         etDomain.isVisible = true
                         spinner.isVisible = false
                     }
+
+                    check(spinner)
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
     }
 
-    var checkCount = 0
+    private var checkCount = 0  // for debug
     fun check(v: View) {
         Log.d(
-            TAG,
-            "v: ${
+            TAG, "v: ${
                 v.toString().run { substring(length - 36, length - 15) }
             }, check count: ${++checkCount}"
         )
@@ -181,13 +178,17 @@ class SignUpChallengeActivity : AppCompatActivity() {
                 }
             }
 
-            etMail -> {
-                if (etMail.text.isEmpty()) {
-                    tvMailWarn.text = "이메일을 입력해주세요."
-                    okMail = false
+            etMail, etDomain -> {
+                okMail = etMail.text.isNotEmpty()
+                okDomain = etDomain.text.isNotEmpty()
+
+                if (spinner.isVisible) {
+                    if (!okMail) tvMailWarn.text = "이메일을 입력해주세요."
+                    else tvMailWarn.text = ""
                 } else {
-                    tvMailWarn.text = ""
-                    okMail = true
+                    if (!okMail) tvMailWarn.text = "이메일${if (!okDomain) "과 도메인" else ""}을 입력해주세요."
+                    else if (!okDomain) tvMailWarn.text = "도메인을 입력해주세요."
+                    else tvMailWarn.text = ""
                 }
             }
 
@@ -210,7 +211,6 @@ class SignUpChallengeActivity : AppCompatActivity() {
                     tvPwWarn.text = ""
                     okPw = true
                 }
-                etName.setText(pw)  //ddd
             }
 
             etVerify -> {
@@ -224,7 +224,7 @@ class SignUpChallengeActivity : AppCompatActivity() {
             }
         }
 
-        btn.isEnabled = okName && okMail && okPw && okVerify
+        btn.isEnabled = okName && okMail && (spinner.isVisible || okDomain) && okPw && okVerify
     }
 
     private fun toastShort(s: String) = Toast.makeText(this, s, Toast.LENGTH_SHORT).show()

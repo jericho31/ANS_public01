@@ -3,7 +3,6 @@ package com.example.signinintroduce
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import kotlin.random.Random
@@ -16,20 +15,20 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val data_id = intent.getStringExtra("id")
-        val ivhome = findViewById<ImageView>(R.id.iv_home)
-        val tvid = findViewById<TextView>(R.id.tv_home_id)
-        val tvname = findViewById<TextView>(R.id.tv_home_name)
-        val tvage = findViewById<TextView>(R.id.tv_home_age)
-        val tvmbti = findViewById<TextView>(R.id.tv_home_mbti)
-        tvid.setText("아이디: $data_id")
-        when (data_id) {
+        val dataId = intent.getStringExtra("id")
+        val ivHome = findViewById<ImageView>(R.id.iv_home)
+        val tvId = findViewById<TextView>(R.id.tv_home_id)
+        val tvName = findViewById<TextView>(R.id.tv_home_name)
+        val tvAge = findViewById<TextView>(R.id.tv_home_age)
+        val tvMbti = findViewById<TextView>(R.id.tv_home_mbti)
+        tvId.text = "아이디: $dataId"
+        when (dataId) {
             "admin" -> {}
             "spa001" -> {
-                ivhome.setImageResource(R.drawable.rtan)
-                tvname.setText("이름: 스파르타코딩이")
-                tvage.setText("나이: 23")
-                tvmbti.setText("MBTI: ESTJ")
+                ivHome.setImageResource(R.drawable.rtan)
+                tvName.text = "이름: 스파르타코딩이"
+                tvAge.text = "나이: 23"
+                tvMbti.text = "MBTI: ESTJ"
             }
 
             else -> {
@@ -37,38 +36,38 @@ class HomeActivity : AppCompatActivity() {
                 do randomNumber = Random.nextInt(5) while (randomNumber == before)
                 when (randomNumber) {
                     0 -> {
-                        ivhome.setImageResource(R.drawable.face1)
-                        tvname.setText("이름: 잘생이")
-                        tvage.setText("나이: 28")
-                        tvmbti.setText("MBIT: ESFP")
+                        ivHome.setImageResource(R.drawable.face1)
+                        tvName.text = "이름: 잘생이"
+                        tvAge.text = "나이: 28"
+                        tvMbti.text = "MBIT: ESFP"
                     }
 
                     1 -> {
-                        ivhome.setImageResource(R.drawable.face2)
-                        tvname.setText("이름: 평범이")
-                        tvage.setText("나이: 24")
-                        tvmbti.setText("MBIT: INFP")
+                        ivHome.setImageResource(R.drawable.face2)
+                        tvName.text = "이름: 평범이"
+                        tvAge.text = "나이: 24"
+                        tvMbti.text = "MBIT: INFP"
                     }
 
                     2 -> {
-                        ivhome.setImageResource(R.drawable.face3)
-                        tvname.setText("이름: 곱슬이")
-                        tvage.setText("나이: 30")
-                        tvmbti.setText("MBIT: ENTJ")
+                        ivHome.setImageResource(R.drawable.face3)
+                        tvName.text = "이름: 곱슬이"
+                        tvAge.text = "나이: 29"
+                        tvMbti.text = "MBIT: ENTJ"
                     }
 
                     3 -> {
-                        ivhome.setImageResource(R.drawable.face4)
-                        tvname.setText("이름: 털보")
-                        tvage.setText("나이: 20")
-                        tvmbti.setText("MBIT: INTP")
+                        ivHome.setImageResource(R.drawable.face4)
+                        tvName.text = "이름: 털보"
+                        tvAge.text = "나이: 20"
+                        tvMbti.text = "MBIT: INTP"
                     }
 
                     else -> {
-                        ivhome.setImageResource(R.drawable.face5)
-                        tvname.setText("이름: 활발이")
-                        tvage.setText("나이: 25")
-                        tvmbti.setText("MBIT: ENFP")
+                        ivHome.setImageResource(R.drawable.face5)
+                        tvName.text = "이름: 활발이"
+                        tvAge.text = "나이: 25"
+                        tvMbti.text = "MBIT: ENFP"
                     }
                 }
             }
