@@ -15,8 +15,8 @@ class SignInActivity : AppCompatActivity() {
             if (it.resultCode == Activity.RESULT_OK) {
                 val etId = findViewById<EditText>(R.id.et_id)
                 val etPw = findViewById<EditText>(R.id.et_password)
-                etId.setText(it.data?.getStringExtra("id") ?: "")
-                etPw.setText(it.data?.getStringExtra("password") ?: "")
+                etId.setText(it.data?.getStringExtra(Extra.id) ?: "")
+                etPw.setText(it.data?.getStringExtra(Extra.password) ?: "")
             }
         }
 
@@ -33,17 +33,17 @@ class SignInActivity : AppCompatActivity() {
                 val etId = findViewById<EditText>(R.id.et_id)
                 val etPw = findViewById<EditText>(R.id.et_password)
                 if (etId.text.isEmpty()) {
-                    toastShort("아이디를 입력해야 합니다.")
+                    toastShort(getString(R.string.toast_enter_id))
                     return
                 }
                 if (etPw.text.isEmpty()) {
-                    toastShort("비밀번호를 입력해야 합니다.")
+                    toastShort(getString(R.string.toast_enter_password))
                     return
                 }
-                toastShort("로그인 성공")
+                toastShort(getString(R.string.toast_login_successed))
 
                 val intent = Intent(this, HomeActivity::class.java)
-                intent.putExtra("id", findViewById<EditText>(R.id.et_id).text.toString())
+                intent.putExtra(Extra.id, findViewById<EditText>(R.id.et_id).text.toString())
                 startActivity(intent)
             }
 

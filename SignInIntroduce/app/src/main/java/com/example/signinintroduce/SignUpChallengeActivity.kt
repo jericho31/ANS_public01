@@ -20,25 +20,25 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import java.util.regex.Pattern
 
-// TODO: to xml
+// xml로 넣으려했더니 getString 하려면 context가 있어야하네. 그냥 전역으로 냅두는걸로.
 // 입력 길이도 정규식에서 체크할 수 있지만 메세지를 달리 하려면 체크하는 쪽에서도 해야 함.
 //val sample = """^[0-9a-zA-Z!@#$%^+\-=]*$"""  // 참고용
 //val sample = """^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^+\-=])(?=\S+$).*$"""  // 참고용
 //val sample = "^(?=.*[A-Za-z])(?=.*[0-9])[A-Za-z[0-9]]{8,20}$"  // 참고용
 //val sample = "^(?=.*[A-Za-z])(?=.*[$@$!%*#?&.])[A-Za-z$@$!%*#?&.]{8,20}$"  // 참고용
 //val sample = "^(?=.*[0-9])(?=.*[$@$!%*#?&.])[[0-9]$@$!%*#?&.]{8,20}$"  // 참고용
-val pwInputRegex = """^[0-9a-zA-Z!"#$%&'()*+,-./:;<=>?@\[\]^_`{|}~]*$"""
-val pwFinalRegex =
+const val pwInputRegex = """^[0-9a-zA-Z!"#$%&'()*+,-./:;<=>?@\[\]^_`{|}~]*$"""
+const val pwFinalRegex =
     """^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!"#$%&'()*+,-./:;<=>?@\[\]^_`{|}~])[0-9a-zA-Z0-9a-zA-Z!"#$%&'()*+,-./:;<=>?@\[\]^_`{|}~]{8,16}$"""
-val pwInputPattern = Pattern.compile(pwInputRegex)
-val pwFinalPattern = Pattern.compile(pwFinalRegex)
+val pwInputPattern: Pattern = Pattern.compile(pwInputRegex)
+val pwFinalPattern: Pattern = Pattern.compile(pwFinalRegex)
 
 class SignUpChallengeActivity : AppCompatActivity() {
     // 클래스 변수명 정규식인듯: """_?[a-z][A-Za-z\d]*"""
     private val TAG = "mine"
 
     companion object {
-        // TODO: 나중에 xml로.
+        // 나중엔 서버에서 받아오는 식.
         val mails = arrayOf("gmail.com", "kakao.com", "naver.com", "직접 입력")
     }
 
@@ -101,7 +101,7 @@ class SignUpChallengeActivity : AppCompatActivity() {
                 if (!pwInputPattern.matcher(etPw.text.toString()).matches()) {
                     // warn 바꾸는 쪽으로. 그냥 바꾸면 잘 안보일듯. 깜빡여야. 그러려면 코루틴 블라킹으로...?
                     // AlphaAnimation 이라는 좋은 기능이 있었다. 역시 구글갓
-                    tvPwWarn.text = "입력할 수 없는 문자입니다."
+                    tvPwWarn.text = getString(R.string.chall_warn_forbidden_input)
                     tvPwWarn.startAnimation(anim)
                     // TODO: InputFilter - 일단 구현했으니 다음 기회에.
                     etPw.removeTextChangedListener(this)
@@ -110,7 +110,7 @@ class SignUpChallengeActivity : AppCompatActivity() {
                     etPw.addTextChangedListener(this)
                     return
                 }
-                tvPwLength.text = "${etPw.text.length}/16"
+                "${etPw.text.length}/16".also { tvPwLength.text = it }
                 check(etPw)
                 Log.d(TAG, "== back from check ==")
             }
@@ -134,11 +134,11 @@ class SignUpChallengeActivity : AppCompatActivity() {
 
         btn.setOnClickListener {
             if (spinner.isVisible) {
-                intent.putExtra("id", "${etMail.text}@${spinner.selectedItem}")
+                intent.putExtra(Extra.id, "${etMail.text}@${spinner.selectedItem}")
             } else {
-                intent.putExtra("id", "${etMail.text}@${etDomain.text}")
+                intent.putExtra(Extra.id, "${etMail.text}@${etDomain.text}")
             }
-            intent.putExtra("password", etPw.text.toString())
+            intent.putExtra(Extra.password, etPw.text.toString())
             setResult(RESULT_OK, intent)
             finish()
         }
@@ -170,7 +170,7 @@ class SignUpChallengeActivity : AppCompatActivity() {
         when (v) {
             etName -> {
                 if (etName.text.isEmpty()) {
-                    tvNameWarn.text = "이름을 입력해주세요."
+                    tvNameWarn.text = getString(R.string.chall_warn_enter_name)
                     okName = false
                 } else {
                     tvNameWarn.text = ""
@@ -183,11 +183,15 @@ class SignUpChallengeActivity : AppCompatActivity() {
                 okDomain = etDomain.text.isNotEmpty()
 
                 if (spinner.isVisible) {
-                    if (!okMail) tvMailWarn.text = "이메일을 입력해주세요."
+                    if (!okMail) tvMailWarn.text = getString(R.string.signup_warn_enter_email)
                     else tvMailWarn.text = ""
                 } else {
-                    if (!okMail) tvMailWarn.text = "이메일${if (!okDomain) "과 도메인" else ""}을 입력해주세요."
-                    else if (!okDomain) tvMailWarn.text = "도메인을 입력해주세요."
+                    if (!okMail) tvMailWarn.text = getString(
+                        R.string.signup_warn_enter_email_format,
+                        if (!okDomain) getString(R.string.signup_warn_and_domain) else ""
+                    )
+                    else if (!okDomain) tvMailWarn.text =
+                        getString(R.string.signup_warn_enter_domain)
                     else tvMailWarn.text = ""
                 }
             }
@@ -195,16 +199,16 @@ class SignUpChallengeActivity : AppCompatActivity() {
             etPw -> {
                 val pw = etPw.text.toString()
                 if (etPw.text.isEmpty()) {
-                    tvPwWarn.text = "비밀번호를 입력해주세요."
+                    tvPwWarn.text = getString(R.string.chall_warn_enter_password)
                     okPw = false
                 } else if (pw.length < 8) {
-                    tvPwWarn.text = "비밀번호는 8자리 이상이어야 합니다."
+                    tvPwWarn.text = getString(R.string.chall_warn_pw_under_8)
                     okPw = false
                 } else if (pw.length > 16) {
-                    tvPwWarn.text = "비밀번호는 16자리 이하여야 합니다."
+                    tvPwWarn.text = getString(R.string.chall_warn_pw_over_16)
                     okPw = false
                 } else if (!pwFinalPattern.matcher(pw).matches()) {
-                    tvPwWarn.text = "영문, 숫자, 특수문자 혼합 8~16자"
+                    tvPwWarn.text = getString(R.string.chall_warn_pw_regex)
                     okPw = false
                     // TODO: 동일한 문자를 많이 포함한 경우, 이름이나 메일 등 개인정보.
                 } else {
@@ -218,7 +222,7 @@ class SignUpChallengeActivity : AppCompatActivity() {
                     tvVerifyWarn.text = ""
                     okVerify = true
                 } else {
-                    tvVerifyWarn.text = "비밀번호가 일치하지 않습니다."
+                    tvVerifyWarn.text = getString(R.string.chall_warn_verify_not_same)
                     okVerify = false
                 }
             }

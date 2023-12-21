@@ -11,19 +11,19 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
-        val etname = findViewById<EditText>(R.id.et_up_name)
-        val etid = findViewById<EditText>(R.id.et_up_id)
-        val etpw = findViewById<EditText>(R.id.et_up_password)
+        val etName = findViewById<EditText>(R.id.et_up_name)
+        val etId = findViewById<EditText>(R.id.et_up_id)
+        val etPw = findViewById<EditText>(R.id.et_up_password)
 
         val btn = findViewById<Button>(R.id.btn_up_signUp)
         btn.setOnClickListener {
-            if (etname.text.isEmpty() || etid.text.isEmpty() || etpw.text.isEmpty()) {
-                toastShort("입력되지 않은 정보가 있습니다.")
+            if (etName.text.isEmpty() || etId.text.isEmpty() || etPw.text.isEmpty()) {
+                toastShort(getString(R.string.toast_input_notyet))
                 return@setOnClickListener
             }
 
-            intent.putExtra("id", etid.text.toString())
-            intent.putExtra("password", etpw.text.toString())
+            intent.putExtra(Extra.id, etId.text.toString())
+            intent.putExtra(Extra.password, etPw.text.toString())
             setResult(RESULT_OK, intent)
 
             finish()

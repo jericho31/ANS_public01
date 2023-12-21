@@ -15,20 +15,20 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        val dataId = intent.getStringExtra("id")
+        val dataId = intent.getStringExtra(Extra.id)
         val ivHome = findViewById<ImageView>(R.id.iv_home)
         val tvId = findViewById<TextView>(R.id.tv_home_id)
         val tvName = findViewById<TextView>(R.id.tv_home_name)
         val tvAge = findViewById<TextView>(R.id.tv_home_age)
         val tvMbti = findViewById<TextView>(R.id.tv_home_mbti)
-        tvId.text = "아이디: $dataId"
+        tvId.text = getString(R.string.home_id_format, dataId)
         when (dataId) {
             "admin" -> {}
             "spa001" -> {
                 ivHome.setImageResource(R.drawable.rtan)
-                tvName.text = "이름: 스파르타코딩이"
-                tvAge.text = "나이: 23"
-                tvMbti.text = "MBTI: ESTJ"
+                tvName.text = getString(R.string.home_name_format, "스파르타코딩이")
+                tvAge.text = getString(R.string.home_age_format, "23")
+                tvMbti.text = getString(R.string.home_mbti_format, "ESTJ")
             }
 
             else -> {
@@ -37,37 +37,37 @@ class HomeActivity : AppCompatActivity() {
                 when (randomNumber) {
                     0 -> {
                         ivHome.setImageResource(R.drawable.face1)
-                        tvName.text = "이름: 잘생이"
-                        tvAge.text = "나이: 28"
-                        tvMbti.text = "MBIT: ESFP"
+                        tvName.text = getString(R.string.home_name_format, "잘생이")
+                        tvAge.text = getString(R.string.home_age_format, "28")
+                        tvMbti.text = getString(R.string.home_mbti_format, "ESFP")
                     }
 
                     1 -> {
                         ivHome.setImageResource(R.drawable.face2)
-                        tvName.text = "이름: 평범이"
-                        tvAge.text = "나이: 24"
-                        tvMbti.text = "MBIT: INFP"
+                        tvName.text = getString(R.string.home_name_format, "평범이")
+                        tvAge.text = getString(R.string.home_age_format, "24")
+                        tvMbti.text = getString(R.string.home_mbti_format, "INFP")
                     }
 
                     2 -> {
                         ivHome.setImageResource(R.drawable.face3)
-                        tvName.text = "이름: 곱슬이"
-                        tvAge.text = "나이: 29"
-                        tvMbti.text = "MBIT: ENTJ"
+                        tvName.text = getString(R.string.home_name_format, "곱슬이")
+                        tvAge.text = getString(R.string.home_age_format, "29")
+                        tvMbti.text = getString(R.string.home_mbti_format, "ENTJ")
                     }
 
                     3 -> {
                         ivHome.setImageResource(R.drawable.face4)
-                        tvName.text = "이름: 털보"
-                        tvAge.text = "나이: 20"
-                        tvMbti.text = "MBIT: INTP"
+                        tvName.text = getString(R.string.home_name_format, "털보")
+                        tvAge.text = getString(R.string.home_age_format, "20")
+                        tvMbti.text = getString(R.string.home_mbti_format, "INTP")
                     }
 
                     else -> {
                         ivHome.setImageResource(R.drawable.face5)
-                        tvName.text = "이름: 활발이"
-                        tvAge.text = "나이: 25"
-                        tvMbti.text = "MBIT: ENFP"
+                        tvName.text = getString(R.string.home_name_format, "활발이")
+                        tvAge.text = getString(R.string.home_age_format, "25")
+                        tvMbti.text = getString(R.string.home_mbti_format, "ENFP")
                     }
                 }
             }

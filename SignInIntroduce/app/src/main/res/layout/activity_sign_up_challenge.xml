@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="이름"
+        android:text="@string/이름"
         android:textSize="18sp" />
 
     <EditText
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:ems="10"
-        android:hint="이름을 입력하세요."
+        android:hint="@string/signup_ui_enter_name"
         android:inputType="text" />
 
     <TextView
@@ -38,7 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="이메일"
+        android:text="@string/이메일"
         android:textSize="18sp" />
 
     <!-- 컨스트레인트 아니고 리니어로도 되네. gone / invisible. gone으로. -->
@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="이메일을 입력하세요."
+            android:hint="@string/chall_ui_enter_email"
             android:inputType="text" />
 
         <TextView
@@ -93,7 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="비밀번호"
+        android:text="@string/비밀번호"
         android:textSize="18sp" />
 
     <EditText
@@ -102,7 +102,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:ems="10"
-        android:hint="영문, 숫자, 특수문자 혼합 8~16자"
+        android:hint="@string/chall_warn_pw_regex"
         android:inputType="textPassword" />
 
     <LinearLayout
@@ -133,7 +133,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="비밀번호 확인"
+        android:text="@string/비밀번호_확인"
         android:textSize="18sp" />
 
     <EditText
@@ -142,7 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:ems="10"
-        android:hint="비밀번호를 한 번 더 입력하세요."
+        android:hint="@string/비밀번호를_한_번_더_입력하세요_"
         android:inputType="textPassword" />
 
     <TextView
@@ -158,6 +158,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:enabled="false"
-        android:text="회원가입"
+        android:text="@string/회원가입"
         android:textSize="18sp" />
 </LinearLayout>
