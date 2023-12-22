@@ -160,4 +160,5 @@
         android:enabled="false"
         android:text="@string/회원가입"
         android:textSize="18sp" />
+
 </LinearLayout>

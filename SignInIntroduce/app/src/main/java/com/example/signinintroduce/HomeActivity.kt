@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import kotlin.random.Random
 
 /** 랜덤으로 띄울 때 이전에 띄웠던 프로필이랑 다른 거 띄우기 위한 전역 변수 */
@@ -73,7 +74,7 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
-        val btn = findViewById<Button>(R.id.btn_home_finish)
+        val btn = findViewById<ConstraintLayout>(R.id.btn_home_finish_selector)
         btn.setOnClickListener {
             finish()
         }
