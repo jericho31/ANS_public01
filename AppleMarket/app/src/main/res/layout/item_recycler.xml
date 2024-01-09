@@ -4,32 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="128dp"
-    android:padding="12dp">
+    android:padding="14dp">
 
-    <ImageView
-        android:id="@+id/iv_item"
-        android:layout_width="104dp"
-        android:layout_height="104dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cv_image"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:cardCornerRadius="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/sample1" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_item"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/sample1" />
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/tv_item_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="팝니다! 좋은 가방~"
-        app:layout_constraintStart_toEndOf="@+id/iv_item"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="tv_item_title 제목 공간"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/cv_image"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_item_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="3dp"
         android:text="ㅇㅇ시 ㅇㅇ구 ㅇㅇ동"
         app:layout_constraintStart_toStartOf="@+id/tv_item_title"
         app:layout_constraintTop_toBottomOf="@+id/tv_item_title" />
@@ -38,8 +50,8 @@
         android:id="@+id/tv_item_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:text="999,999원"
+        android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/tv_item_address"
         app:layout_constraintTop_toBottomOf="@+id/tv_item_address" />

@@ -3,6 +3,7 @@ package com.example.applemarket
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.applemarket.databinding.ActivityDetailBinding
+import java.text.DecimalFormat
 
 class DetailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDetailBinding
@@ -20,7 +21,9 @@ class DetailActivity : AppCompatActivity() {
             tvDetailAddress.text = data.address
             tvDetailTitle.text = data.title
             tvDetailDesc.text = data.desc
-            tvDetailPrice.text = "${data.price}원"
+            tvDetailPrice.text = "${DecimalFormat(",###").format(data.price)}원"
+
+            ivDetailBack.setOnClickListener { onBackPressed() }
         }
     }
 }
