@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">AppleMarket</string>
+<!--    <string name="sample1_title">산진 한달된 선풍기 팝니다</string>-->
+<!--    <string name="sample1_desc">이사가서 필요가 없어졌어요 급하게 내놓습니다</string>-->
+<!--    <string name="sample1_seller">대현동</string>-->
+<!--    <string name="sample1_price">1000</string>-->
+<!--    <string name="sample1_address">서울 서대문구 창천동</string>-->
+<!--    <string name="sample1_like">13</string>-->
+<!--    <string name="sample1_comment">25</string>-->
 </resources>
