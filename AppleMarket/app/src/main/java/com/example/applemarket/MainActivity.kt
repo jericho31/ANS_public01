@@ -24,13 +24,14 @@ import com.example.applemarket.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var adapter: MyAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val adapter = MyAdapter(dataList).apply { parentActivity = this@MainActivity }
+        adapter = MyAdapter(dataList).apply { parentActivity = this@MainActivity }
         binding.rv.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL))
         binding.rv.adapter = adapter
         binding.rv.layoutManager = LinearLayoutManager(this)
@@ -52,6 +53,12 @@ class MainActivity : AppCompatActivity() {
         binding.ivMainBell.setOnClickListener { notification() }
         binding.fab.setOnClickListener { binding.rv.smoothScrollToPosition(0) }
         binding.rv.addOnScrollListener(createRvOnScrollListener())
+    }
+
+    override fun onResume() {
+        // TODO: notify를 더 구체적으로
+        adapter.notifyDataSetChanged()
+        super.onResume()
     }
 
     private fun createRvOnScrollListener() = object : RecyclerView.OnScrollListener() {

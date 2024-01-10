@@ -31,8 +31,26 @@ class DetailActivity : AppCompatActivity() {
             tvDetailTitle.text = data.title
             tvDetailDesc.text = data.desc
             tvDetailPrice.text = "${DecimalFormat(",###").format(data.price)}원"
+            if (data.liked) ivDetailLike.setImageResource(R.drawable.heart_red)
+            else ivDetailLike.setImageResource(R.drawable.heart_empty)
 
             ivDetailBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+        }
+
+        binding.ivDetailLike.setOnClickListener { likeOnClick(data) }
+    }
+
+    private fun likeOnClick(data: PostingData) {
+        dataList.firstOrNull { it.id == data.id }?.also {
+            if (it.liked) {
+                binding.ivDetailLike.setImageResource(R.drawable.heart_empty)
+                it.liked = false
+                it.like--
+            } else {
+                binding.ivDetailLike.setImageResource(R.drawable.heart_red)
+                it.liked = true
+                it.like++
+            }
         }
     }
 }

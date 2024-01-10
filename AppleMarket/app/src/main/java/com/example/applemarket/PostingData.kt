@@ -5,13 +5,14 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class PostingData(
-    val id: Int,
-    val resId: Int,
-    val title: String,
-    val desc: String,
-    val user: String,
-    val price: Int,
-    val address: String,
-    val like: Int,
-    val comment: Int
+    var id: Int,
+    var resId: Int,
+    var title: String,
+    var desc: String,
+    var user: String,
+    var price: Int,
+    var address: String,
+    var like: Int,
+    var comment: Int,
+    var liked: Boolean = false
 ) : Parcelable

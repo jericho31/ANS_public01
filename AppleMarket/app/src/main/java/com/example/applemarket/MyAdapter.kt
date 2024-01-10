@@ -3,6 +3,7 @@ package com.example.applemarket
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -18,6 +19,7 @@ class MyAdapter(private val itemList: MutableList<PostingData>) :
         val tvPrice = binding.tvItemPrice
         val tvComment = binding.tvItemComment
         val tvLike = binding.tvItemLike
+        val ivLike = binding.ivItemLike
     }
 
     lateinit var parentActivity: AppCompatActivity
@@ -48,6 +50,8 @@ class MyAdapter(private val itemList: MutableList<PostingData>) :
             tvPrice.text = "${DecimalFormat(",###").format(item.price)}원"
             tvComment.text = item.comment.toString()
             tvLike.text = item.like.toString()
+            if (item.liked) ivLike.setImageResource(R.drawable.heart_red)
+            else ivLike.setImageResource(R.drawable.heart_empty)
         }
     }
 

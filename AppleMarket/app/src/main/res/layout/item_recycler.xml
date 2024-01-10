@@ -71,7 +71,7 @@
         android:layout_marginEnd="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tv_item_like"
-        app:srcCompat="@drawable/heart" />
+        app:srcCompat="@drawable/heart_empty" />
 
     <TextView
         android:id="@+id/tv_item_comment"
