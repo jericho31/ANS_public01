@@ -37,8 +37,7 @@ class MainActivity : AppCompatActivity() {
             override fun onClick(view: View, position: Int) {
 //                val item = dataList[position]
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
-                // TODO: parcelize
-                intent.putExtra("position", position)
+                intent.putExtra(Extra.item, dataList[position])
                 startActivity(intent)
             }
         }
@@ -103,6 +102,7 @@ class MainActivity : AppCompatActivity() {
                 })
             builder = NotificationCompat.Builder(this, channelId)
         } else {  // < Oreo, api26
+            @Suppress("DEPRECATION")
             builder = NotificationCompat.Builder(this)
         }
 

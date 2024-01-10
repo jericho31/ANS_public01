@@ -1,5 +1,9 @@
 package com.example.applemarket
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class PostingData(
     val id: Int,
     val resId: Int,
@@ -10,4 +14,4 @@ data class PostingData(
     val address: String,
     val like: Int,
     val comment: Int
-)
+) : Parcelable
