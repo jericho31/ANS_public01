@@ -3,6 +3,8 @@ package com.example.applemarket
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.applemarket.databinding.ItemRecyclerBinding
 import java.text.DecimalFormat
@@ -18,6 +20,8 @@ class MyAdapter(private val itemList: MutableList<PostingData>) :
         val tvLike = binding.tvItemLike
     }
 
+    lateinit var parentActivity: AppCompatActivity
+
     /** 아이템 클릭에 대한 이벤트를 메인으로 넘겨주고 싶을 때, 이를 위한 인터페이스 */
     interface ItemClick {
         fun onClick(view: View, position: Int)
@@ -32,6 +36,10 @@ class MyAdapter(private val itemList: MutableList<PostingData>) :
 
     override fun onBindViewHolder(holder: Holder, position: Int) {
         holder.itemView.setOnClickListener { itemClick?.onClick(it, position) }
+        holder.itemView.setOnLongClickListener {
+            deleteDialog(position)
+            true
+        }
         val item = itemList[position]
         with(holder) {
             iv.setImageResource(item.resId)
@@ -44,4 +52,19 @@ class MyAdapter(private val itemList: MutableList<PostingData>) :
     }
 
     override fun getItemId(position: Int): Long = position.toLong()
+
+    private fun deleteDialog(position: Int) {
+        AlertDialog.Builder(parentActivity).apply {
+            setTitle("상품 삭제")
+            setMessage("상품을 정말로 삭제하시겠습니까?")
+            setIcon(R.drawable.chat)
+
+            setNegativeButton("취소", null)
+            setPositiveButton("확인") { _, _ ->
+                dataList.removeAt(position)
+                notifyItemRemoved(position)
+                notifyItemRangeChanged(position, dataList.size)
+            }
+        }.show()
+    }
 }

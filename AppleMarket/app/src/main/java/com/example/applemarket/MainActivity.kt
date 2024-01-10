@@ -9,14 +9,17 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowManager
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.applemarket.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +30,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val adapter = MyAdapter(dataList)
+        val adapter = MyAdapter(dataList).apply { parentActivity = this@MainActivity }
         binding.rv.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL))
         binding.rv.adapter = adapter
         binding.rv.layoutManager = LinearLayoutManager(this)
@@ -47,6 +50,14 @@ class MainActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback { exitDialog(this) }
 
         binding.ivMainBell.setOnClickListener { notification() }
+        binding.fab.setOnClickListener { binding.rv.smoothScrollToPosition(0) }
+        binding.rv.addOnScrollListener(createRvOnScrollListener())
+    }
+
+    private fun createRvOnScrollListener() = object : RecyclerView.OnScrollListener() {
+        override fun onScrollStateChanged(rv: RecyclerView, newState: Int) {
+            binding.fab.isVisible = rv.canScrollVertically(-1)
+        }
     }
 
     private fun exitDialog(callback: OnBackPressedCallback) {
@@ -61,6 +72,16 @@ class MainActivity : AppCompatActivity() {
                 onBackPressedDispatcher.onBackPressed()
             }
         }.show()
+
+        /*  왜 뒷 배경이 어두워지지 않는거냐...
+        .create().apply {
+            window!!.setDimAmount(0.5f)
+            window!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            window!!.addFlags(WindowManager.LayoutParams.DIM_AMOUNT_CHANGED)
+        }
+         */
+
+        // TODO: 뒷 배경을 어떻게 어둡게 해야할까요?
     }
 
 //    @Deprecated("Deprecated in Java")
