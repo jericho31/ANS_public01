@@ -68,5 +68,6 @@
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/image_lv2" />
+        app:srcCompat="@drawable/arrow_top"
+        tools:visibility="visible" />
 </androidx.constraintlayout.widget.ConstraintLayout>

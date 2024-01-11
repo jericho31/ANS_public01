@@ -1,5 +1,6 @@
 package com.example.applemarket
 
+import android.graphics.Paint
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -33,6 +34,7 @@ class DetailActivity : AppCompatActivity() {
             tvDetailPrice.text = "${DecimalFormat(",###").format(data.price)}원"
             if (data.liked) ivDetailLike.setImageResource(R.drawable.heart_red)
             else ivDetailLike.setImageResource(R.drawable.heart_empty)
+            tvDetailDegreeText.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
             ivDetailBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
         }

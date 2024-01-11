@@ -10,12 +10,14 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.view.animation.AlphaAnimation
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
+import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,6 +27,8 @@ import com.example.applemarket.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var adapter: MyAdapter
+    private val fadeIn = AlphaAnimation(0.0f, 1.0f).apply { duration = 512L }
+    private val fadeOut = AlphaAnimation(1.0f, 0.0f).apply { duration = 512L }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,7 +67,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun createRvOnScrollListener() = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(rv: RecyclerView, newState: Int) {
-            binding.fab.isVisible = rv.canScrollVertically(-1)
+            val fab = binding.fab
+            if (rv.canScrollVertically(-1) && fab.isVisible.not()) {
+                fab.isVisible = true
+                fab.startAnimation(fadeIn)
+            } else if (rv.canScrollVertically(-1).not() && fab.isVisible) {
+                fab.startAnimation(fadeOut)
+                fab.isVisible = false
+            }
         }
     }
 
