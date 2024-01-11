@@ -35,18 +35,23 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adapter = MyAdapter(dataList).apply { parentActivity = this@MainActivity }
+        adapter = MyAdapter(dataList)
         binding.rv.addItemDecoration(DividerItemDecoration(this, LinearLayout.VERTICAL))
         binding.rv.adapter = adapter
         binding.rv.layoutManager = LinearLayoutManager(this)
 
-        /** 아이템 클릭 이벤트로 메인의 뷰의 값을 변경하는 함수를 작성해 인터페이스 변수에 집어넣기 */
+        /** 아이템 클릭 이벤트 함수를 메인에서 작성해 인터페이스 변수에 집어넣기 */
         adapter.itemClick = object : MyAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
 //                val item = dataList[position]
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
                 intent.putExtra(Extra.item, dataList[position])
                 startActivity(intent)
+            }
+
+            override fun onLongClick(view: View?, position: Int): Boolean {
+                deleteDialog(position)
+                return true
             }
         }
 
@@ -60,10 +65,26 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
+        // 상세페이지에서 좋아요 온오프하고 둘아오면 rv에 반영하기 위해.
         // TODO: notify를 더 구체적으로
         adapter.notifyDataSetChanged()
         super.onResume()
     }
+
+//    // depreated 돼서 onBackPressedDispatcher로 작성함
+//    override fun onBackPressed() {
+//        val builder = AlertDialog.Builder(this)
+//        builder.setTitle("종료")
+//        builder.setMessage("정말 종료하시겠습니까?")
+//        builder.setIcon(R.drawable.chat)
+//
+//        val listener = DialogInterface.OnClickListener { _, _ -> super.onBackPressed() }
+//
+//        builder.setNegativeButton("취소", null)
+//        builder.setPositiveButton("확인", listener)
+//
+//        builder.show()
+//    }
 
     private fun createRvOnScrollListener() = object : RecyclerView.OnScrollListener() {
         override fun onScrollStateChanged(rv: RecyclerView, newState: Int) {
@@ -102,20 +123,20 @@ class MainActivity : AppCompatActivity() {
         // TODO: 뒷 배경을 어떻게 어둡게 해야할까요?
     }
 
-//    @Deprecated("Deprecated in Java")
-//    override fun onBackPressed() {
-//        val builder = AlertDialog.Builder(this)
-//        builder.setTitle("종료")
-//        builder.setMessage("정말 종료하시겠습니까?")
-//        builder.setIcon(R.drawable.chat)
-//
-//        val listener = DialogInterface.OnClickListener { _, _ -> super.onBackPressed() }
-//
-//        builder.setNegativeButton("취소", null)
-//        builder.setPositiveButton("확인", listener)
-//
-//        builder.show()
-//    }
+    private fun deleteDialog(position: Int) {
+        AlertDialog.Builder(this).apply {
+            setTitle("상품 삭제")
+            setMessage("상품을 정말로 삭제하시겠습니까?")
+            setIcon(R.drawable.chat)
+
+            setNegativeButton("취소", null)
+            setPositiveButton("확인") { _, _ ->
+                dataList.removeAt(position)
+                adapter.notifyItemRemoved(position)
+                adapter.notifyItemRangeChanged(position, dataList.size)
+            }
+        }.show()
+    }
 
     private fun notification() {
         val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
