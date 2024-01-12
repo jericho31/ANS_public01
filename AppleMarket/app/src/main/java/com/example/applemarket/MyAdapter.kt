@@ -41,7 +41,8 @@ class MyAdapter(private val itemList: MutableList<PostingData>) :
             iv.setImageResource(item.resId)
             tvTitle.text = item.title
             tvAddress.text = item.address
-            tvPrice.text = "${DecimalFormat(",###").format(item.price)}원"
+            // 자꾸 문자열 합치지 말라해서 힌트대로 이렇게 바꿈
+            "${DecimalFormat(",###").format(item.price)}원".also { tvPrice.text = it }
             tvComment.text = item.comment.toString()
             tvLike.text = item.like.toString()
             if (item.liked) ivLike.setImageResource(R.drawable.heart_red)

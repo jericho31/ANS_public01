@@ -19,27 +19,27 @@ class DetailActivity : AppCompatActivity() {
             intent.getParcelableExtra(Extra.item, PostingData::class.java)
         } else {
             @Suppress("DEPRECATION")
-            intent.getParcelableExtra<PostingData>(Extra.item)
+            intent.getParcelableExtra(Extra.item)  // explicit 하다면서 타입 제거 가능하네?
         } ?: PostingData(  // 만약 데이터를 안담아서 넘겼으면 기본값
             0, R.drawable.sample2, "title", "desc", "user",
             999999, "address", 999, 999
         )
 
-        with(binding) {
+        binding.apply {
             ivDetailProduct.setImageResource(data.resId)
             tvDetailUser.text = data.user
             tvDetailAddress.text = data.address
             tvDetailTitle.text = data.title
             tvDetailDesc.text = data.desc
-            tvDetailPrice.text = "${DecimalFormat(",###").format(data.price)}원"
+            // 문자열 합치지 말라고 떠서 바꿔줌
+            "${DecimalFormat(",###").format(data.price)}원".also { tvDetailPrice.text = it }
             if (data.liked) ivDetailLike.setImageResource(R.drawable.heart_red)
             else ivDetailLike.setImageResource(R.drawable.heart_empty)
             tvDetailDegreeText.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
             ivDetailBack.setOnClickListener { onBackPressedDispatcher.onBackPressed() }
+            ivDetailLike.setOnClickListener { likeOnClick(data) }
         }
-
-        binding.ivDetailLike.setOnClickListener { likeOnClick(data) }
     }
 
     private fun likeOnClick(data: PostingData) {

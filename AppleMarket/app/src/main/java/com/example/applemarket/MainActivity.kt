@@ -9,7 +9,6 @@ import android.media.RingtoneManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.view.WindowManager
 import android.view.animation.AlphaAnimation
 import android.widget.LinearLayout
 import androidx.activity.OnBackPressedCallback
@@ -17,7 +16,6 @@ import androidx.activity.addCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
-import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,10 +38,9 @@ class MainActivity : AppCompatActivity() {
         binding.rv.adapter = adapter
         binding.rv.layoutManager = LinearLayoutManager(this)
 
-        /** 아이템 클릭 이벤트 함수를 메인에서 작성해 인터페이스 변수에 집어넣기 */
+        /** 어댑터의 아이템 클릭 이벤트 함수를 메인에서 작성해 인터페이스 변수에 집어넣기 */
         adapter.itemClick = object : MyAdapter.ItemClick {
             override fun onClick(view: View, position: Int) {
-//                val item = dataList[position]
                 val intent = Intent(this@MainActivity, DetailActivity::class.java)
                 intent.putExtra(Extra.item, dataList[position])
                 startActivity(intent)
@@ -112,15 +109,8 @@ class MainActivity : AppCompatActivity() {
             }
         }.show()
 
-        /*  왜 뒷 배경이 어두워지지 않는거냐...
-        .create().apply {
-            window!!.setDimAmount(0.5f)
-            window!!.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-            window!!.addFlags(WindowManager.LayoutParams.DIM_AMOUNT_CHANGED)
-        }
-         */
-
-        // TODO: 뒷 배경을 어떻게 어둡게 해야할까요?
+        // 다이얼로그 뒷 배경이 어두워지지 않던 문제
+        // 에뮬레이터의 개발자 옵션 - ‘HW 오버레이 사용 안함’ 활성화
     }
 
     private fun deleteDialog(position: Int) {
