@@ -18,6 +18,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.lifecycle.ViewModelProvider
+import com.example.signinintroduce.databinding.ActivitySignUpChallengeBinding
 import java.util.regex.Pattern
 
 // xml로 넣으려했더니 getString 하려면 context가 있어야하네. 그냥 전역으로 냅두는걸로.
@@ -36,6 +38,8 @@ val pwFinalPattern: Pattern = Pattern.compile(pwFinalRegex)
 class SignUpChallengeActivity : AppCompatActivity() {
     // 클래스 변수명 정규식인듯: """_?[a-z][A-Za-z\d]*"""
     private val TAG = "mine"
+    private lateinit var binding: ActivitySignUpChallengeBinding
+    private lateinit var viewModel: SignUpViewModel
 
     companion object {
         // 나중엔 서버에서 받아오는 식.
@@ -119,7 +123,10 @@ class SignUpChallengeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_sign_up_challenge)
+        binding = ActivitySignUpChallengeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        viewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
+        initViewModel(viewModel)
 
         // TODO: onCreate에 만든 변수가 어떻게 유지될 수 있는거지...?
 
@@ -159,6 +166,8 @@ class SignUpChallengeActivity : AppCompatActivity() {
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
     }
+
+    private fun initViewModel(vm: SignUpViewModel) {}
 
     private var checkCount = 0  // for debug
     fun check(v: View) {
