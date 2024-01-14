@@ -104,7 +104,6 @@ class SignUpChallengeActivity : AppCompatActivity() {
     private fun initViewModel(vm: SignUpViewModel) {
         vm.btnChallSignupIsEnabled.observe(this) { binding.btnChallSignup.isEnabled = it }
         vm.spnrChallMailIsVisible.observe(this) { binding.spnrChallMail.isVisible = it }
-        vm.etChallPasswordText.observe(this) { binding.etChallPassword.setText(it) }
         vm.tvChallPasswordWarnText.observe(this) { binding.tvChallPasswordWarn.text = it }
         vm.tvChallPasswordWarnStartAnimation.observe(this) {
             if (!it) return@observe
@@ -113,10 +112,8 @@ class SignUpChallengeActivity : AppCompatActivity() {
         }
         vm.etChallPasswordSetSelection.observe(this) { binding.etChallPassword.setSelection(it) }
         vm.tvChallPasswordLengthText.observe(this) { binding.tvChallPasswordLength.text = it }
-        vm.etChallNameText.observe(this) { binding.etChallName.text }
         vm.tvChallNameWarnText.observe(this) { binding.tvChallNameWarn.text = it }
         vm.tvChallMailWarnText.observe(this) { binding.tvChallMailWarn.text = it }
-        vm.spinnerIsVisible.observe(this) { binding.spnrChallMail.isVisible = it }
         vm.tvMailWarnText.observe(this) { binding.tvChallMailWarn.text = it }
         vm.tvChallVerifyWarnText.observe(this) { binding.tvChallVerifyWarn.text = it }
     }

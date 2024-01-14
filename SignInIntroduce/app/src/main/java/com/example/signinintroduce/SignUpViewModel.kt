@@ -1,13 +1,12 @@
 package com.example.signinintroduce
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import java.util.regex.Pattern
 
 class SignUpViewModel : ViewModel() {
-    private val TAG = "mine"
+//    private val TAG = "mine"
 
     //    val pwInputRegex = """^[0-9a-zA-Z!"#$%&'()*+,-./:;<=>?@\[\]^_`{|}~]*$"""
     val pwFinalRegex =
@@ -19,11 +18,11 @@ class SignUpViewModel : ViewModel() {
     private val _btnChallSignupIsEnabled = MutableLiveData<Boolean>(false)
     val btnChallSignupIsEnabled: LiveData<Boolean> get() = _btnChallSignupIsEnabled
 
-    private val _spnrChallMailIsVisible = MutableLiveData<Boolean>(false)
+    private val _spnrChallMailIsVisible = MutableLiveData<Boolean>(true)
     val spnrChallMailIsVisible: LiveData<Boolean> get() = _spnrChallMailIsVisible
 
     private val _etChallPasswordText = MutableLiveData<String>("")
-    val etChallPasswordText: LiveData<String> get() = _etChallPasswordText
+//    val etChallPasswordText: LiveData<String> get() = _etChallPasswordText
 
     private val _tvChallPasswordWarnText = MutableLiveData<String>("")
     val tvChallPasswordWarnText: LiveData<String> get() = _tvChallPasswordWarnText
@@ -41,7 +40,7 @@ class SignUpViewModel : ViewModel() {
     val tvChallPasswordLengthText: LiveData<String> get() = _tvChallPasswordLengthText
 
     private val _etChallNameText = MutableLiveData<String>("")
-    val etChallNameText: LiveData<String> get() = _etChallNameText
+//    val etChallNameText: LiveData<String> get() = _etChallNameText
 
     private val _tvChallNameWarnText = MutableLiveData<String>("")
     val tvChallNameWarnText: LiveData<String> get() = _tvChallNameWarnText
@@ -54,9 +53,6 @@ class SignUpViewModel : ViewModel() {
 
     private val _tvChallMailWarnText = MutableLiveData<String>("")
     val tvChallMailWarnText: LiveData<String> get() = _tvChallMailWarnText
-
-    private val _spinnerIsVisible = MutableLiveData(false)
-    val spinnerIsVisible: LiveData<Boolean> get() = _spinnerIsVisible
 
     private val _tvMailWarnText = MutableLiveData("")
     val tvMailWarnText: LiveData<String> get() = _tvMailWarnText
@@ -106,13 +102,13 @@ class SignUpViewModel : ViewModel() {
 //        }
 //    }
 
-    private var checkCount = 0  // for debug
+//    private var checkCount = 0  // for debug
     fun check(v: EnumView, text: String = "") {
-        Log.d(
-            TAG, "v: ${
-                v.toString().run { substring(length - 36, length - 15) }
-            }, check count: ${++checkCount}"
-        )
+//        Log.d(
+//            TAG, "v: ${
+//                v.toString().run { substring(length - 36, length - 15) }
+//            }, check count: ${++checkCount}"
+//        )
         when (v) {
             EnumView.ET_CHALL_NAME -> {
                 _etChallNameText.value = text
