@@ -100,6 +100,9 @@ class SignUpChallengeActivity : AppCompatActivity() {
                 )
             }
             intent.putExtra(Extra.password, binding.etChallPassword.text.toString())
+            // TODO: 뷰모델에서 체크를 해야한다. 그냥 스타트 액티비티나 셋리절트 해버리면 문제가 있을 수 있다.
+            // 서버에 유저 정보를 적재하고. 결과를 확인해서. 결과값을 라이브데이터에 저장해두고.
+            // 추후에 확인해서 액티비티 넘어가기?
             setResult(RESULT_OK, intent)
             finish()
         }
