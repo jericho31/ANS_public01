@@ -8,7 +8,6 @@ import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
@@ -45,11 +44,32 @@ class SignUpChallengeActivity : AppCompatActivity() {
         binding = ActivitySignUpChallengeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this)[SignUpViewModel::class.java]
-        initViewModel(viewModel)
+        initViewModel(this)
 
         binding.spnrChallMail.adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, mails)
 
+        initListeners()
+    }
+
+    private fun initViewModel(ac: AppCompatActivity) = viewModel.apply {
+        btnChallSignupIsEnabled.observe(ac) { binding.btnChallSignup.isEnabled = it }
+        spnrChallMailIsVisible.observe(ac) { binding.spnrChallMail.isVisible = it }
+        tvChallPasswordWarnText.observe(ac) { binding.tvChallPasswordWarn.text = it }
+        tvChallPasswordWarnStartAnimation.observe(ac) {
+            if (!it) return@observe
+            setTvChallPasswordWarnStartAnimation(false)
+            binding.tvChallPasswordWarn.startAnimation(anim)
+        }
+        etChallPasswordSetSelection.observe(ac) { binding.etChallPassword.setSelection(it) }
+        tvChallPasswordLengthText.observe(ac) { binding.tvChallPasswordLength.text = it }
+        tvChallNameWarnText.observe(ac) { binding.tvChallNameWarn.text = it }
+        tvChallMailWarnText.observe(ac) { binding.tvChallMailWarn.text = it }
+        tvMailWarnText.observe(ac) { binding.tvChallMailWarn.text = it }
+        tvChallVerifyWarnText.observe(ac) { binding.tvChallVerifyWarn.text = it }
+    }
+
+    private fun initListeners() {
         arrET.forEach { et ->
             et.addTextChangedListener {
                 viewModel.check(
@@ -101,27 +121,9 @@ class SignUpChallengeActivity : AppCompatActivity() {
             }
     }
 
-    private fun initViewModel(vm: SignUpViewModel) {
-        vm.btnChallSignupIsEnabled.observe(this) { binding.btnChallSignup.isEnabled = it }
-        vm.spnrChallMailIsVisible.observe(this) { binding.spnrChallMail.isVisible = it }
-        vm.tvChallPasswordWarnText.observe(this) { binding.tvChallPasswordWarn.text = it }
-        vm.tvChallPasswordWarnStartAnimation.observe(this) {
-            if (!it) return@observe
-            vm.setTvChallPasswordWarnStartAnimation(false)
-            binding.tvChallPasswordWarn.startAnimation(anim)
-        }
-        vm.etChallPasswordSetSelection.observe(this) { binding.etChallPassword.setSelection(it) }
-        vm.tvChallPasswordLengthText.observe(this) { binding.tvChallPasswordLength.text = it }
-        vm.tvChallNameWarnText.observe(this) { binding.tvChallNameWarn.text = it }
-        vm.tvChallMailWarnText.observe(this) { binding.tvChallMailWarn.text = it }
-        vm.tvMailWarnText.observe(this) { binding.tvChallMailWarn.text = it }
-        vm.tvChallVerifyWarnText.observe(this) { binding.tvChallVerifyWarn.text = it }
-    }
+//    private fun toastShort(s: String) = Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
 
-
-    private fun toastShort(s: String) = Toast.makeText(this, s, Toast.LENGTH_SHORT).show()
-
-    fun viewToEnum(v: View): EnumView = when (v) {
+    private fun viewToEnum(v: View): EnumView = when (v) {
         binding.etChallName -> EnumView.ET_CHALL_NAME
         binding.etChallMail -> EnumView.ET_CHALL_MAIL
         binding.etChallDomain -> EnumView.ET_CHALL_DOMAIN
