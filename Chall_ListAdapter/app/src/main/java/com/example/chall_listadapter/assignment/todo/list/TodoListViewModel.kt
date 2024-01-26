@@ -26,9 +26,21 @@ class TodoListViewModel : ViewModel() {
         if (position < 0 || position >= (uiState.value?.list?.size ?: 0)) return
 
         _uiState.value = uiState.value?.copy(
-            list = uiState.value?.list.orEmpty().toMutableList().also {
+            list = uiState.value!!.list.toMutableList().also {
                 Log.d("myTag", "뷰모델 딜리트 포지션: $position")
                 it.removeAt(position)
+            }
+        )
+    }
+
+    fun updateTodoItem(position: Int, model: TodoModel?) {
+        if (position < 0 || position >= (uiState.value?.list?.size ?: 0)) return
+        if (model == null) return
+
+        _uiState.value = uiState.value!!.copy(
+            list = uiState.value!!.list.toMutableList().also {
+                Log.d("myTag", "뷰모델 업데이트 포지션: $position, 모델: $model")
+                it[position] = model
             }
         )
     }

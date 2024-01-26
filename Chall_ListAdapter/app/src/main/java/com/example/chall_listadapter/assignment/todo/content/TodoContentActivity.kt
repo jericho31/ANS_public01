@@ -87,6 +87,7 @@ class TodoContentActivity : AppCompatActivity() {
                     EXTRA_TODO_ENTRY_TYPE,
                     TodoContentType.UPDATE
                 )
+                putExtra(EXTRA_ITEM_POSITION, intent.getIntExtra(EXTRA_ITEM_POSITION, -1))
                 putExtra(
                     EXTRA_TODO_MODEL,
                     TodoModel(
@@ -101,7 +102,8 @@ class TodoContentActivity : AppCompatActivity() {
         val contentType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
             intent.getSerializableExtra(EXTRA_TODO_ENTRY_TYPE, TodoContentType::class.java)
         else
-            intent.getSerializableExtra(EXTRA_TODO_ENTRY_TYPE)
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra(EXTRA_TODO_ENTRY_TYPE) as? TodoContentType
         when (contentType) {
             TodoContentType.CREATE -> {
                 btnDelete.isVisible = false
@@ -111,6 +113,8 @@ class TodoContentActivity : AppCompatActivity() {
             TodoContentType.UPDATE, TodoContentType.DELETE -> {
                 btnCreate.isVisible = false
             }
+
+            else -> {}
         }
     }
 }

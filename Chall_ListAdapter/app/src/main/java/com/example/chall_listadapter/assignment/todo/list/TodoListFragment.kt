@@ -56,6 +56,7 @@ class TodoListFragment : Fragment() {
                         TodoContentActivity.Companion.TodoContentType::class.java
                     )
                 } else {
+                    @Suppress("DEPRECATION")
                     result.data?.getSerializableExtra(
                         TodoContentActivity.EXTRA_TODO_ENTRY_TYPE
                     ) as? TodoContentActivity.Companion.TodoContentType
@@ -71,16 +72,31 @@ class TodoListFragment : Fragment() {
                         deleteTodoItem(position)
                     }
 
+                    TodoContentActivity.Companion.TodoContentType.UPDATE -> {
+                        val model = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            result.data?.getParcelableExtra(
+                                TodoContentActivity.EXTRA_TODO_MODEL,
+                                TodoModel::class.java
+                            )
+                        } else {
+                            @Suppress("DEPRECATION")
+                            result.data?.getParcelableExtra(
+                                TodoContentActivity.EXTRA_TODO_MODEL
+                            )
+                        }
+                        updateTodoItem(position, model)
+                    }
+
                     else -> {}
                 }
             }
         }
         listAdapter.itemClick = object : TodoListAdapter.ItemClick {
-
             override fun onClick(view: View, position: Int) {
                 Log.d("myTag", "프래그먼트 온클릭 오버라이드")
-                updateTodoLauncher.launch(TodoContentActivity
-                    .newIntentForUpdate(requireContext(), position))
+                updateTodoLauncher.launch(
+                    TodoContentActivity.newIntentForUpdate(requireContext(), position)
+                )
             }
         }
     }
@@ -102,5 +118,9 @@ class TodoListFragment : Fragment() {
 
     fun deleteTodoItem(position: Int) {
         viewModel.deleteTodoItem(position)
+    }
+
+    fun updateTodoItem(position: Int, model: TodoModel?) {
+        viewModel.updateTodoItem(position, model)
     }
 }
