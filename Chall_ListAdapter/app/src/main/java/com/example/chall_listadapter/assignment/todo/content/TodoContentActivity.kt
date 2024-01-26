@@ -3,9 +3,8 @@ package com.example.chall_listadapter.assignment.todo.content
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.chall_listadapter.R
+import androidx.appcompat.app.AppCompatActivity
 import com.example.chall_listadapter.assignment.todo.TodoModel
 import com.example.chall_listadapter.databinding.ActivityTodoContentBinding
 
@@ -15,6 +14,7 @@ class TodoContentActivity : AppCompatActivity() {
 
         const val EXTRA_TODO_MODEL = "extra_todo_model"
 
+        /** newIntent 함수에 필요한 데이터를 파라미터로 만들면 호출하는 쪽에서 인터페이스처럼 사용 */
         fun newIntent(
             context: Context
         ) = Intent(context, TodoContentActivity::class.java)
@@ -33,25 +33,22 @@ class TodoContentActivity : AppCompatActivity() {
 
     private fun initView() = with(binding) {
         toolBar.setNavigationOnClickListener {
-            finish()
+            onBackPressedDispatcher.onBackPressed()
+//            finish()
         }
 
         submit.setOnClickListener {
-            val intent = Intent().apply {
-                val title = todoTitle.text.toString()
-                val content = todoContent.text.toString()
-                putExtra(
+            setResult(Activity.RESULT_OK, Intent().also {
+                it.putExtra(
                     EXTRA_TODO_MODEL,
                     TodoModel(
-                        title = title,
-                        content = content
+                        title = todoTitle.text.toString(),
+                        content = todoContent.text.toString()
                     )
                 )
-            }
-
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+            })
+            onBackPressedDispatcher.onBackPressed()
+//            finish()
         }
     }
-
 }

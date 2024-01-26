@@ -22,25 +22,6 @@ class TodoMainActivity : AppCompatActivity() {
         TodoMainViewPagerAdapter(this)
     }
 
-    private val createTodoLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val todoModel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    result.data?.getParcelableExtra(
-                        TodoContentActivity.EXTRA_TODO_MODEL,
-                        TodoModel::class.java
-                    )
-                } else {
-                    result.data?.getParcelableExtra(
-                        TodoContentActivity.EXTRA_TODO_MODEL
-                    )
-                }
-
-                val fragment = viewPagerAdapter.getTodoListFragment() as? TodoListFragment
-                fragment?.addTodoItem(todoModel)
-            }
-        }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -68,6 +49,25 @@ class TodoMainActivity : AppCompatActivity() {
         }.attach()
 
         // fab
+        val createTodoLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val todoModel = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    result.data?.getParcelableExtra(
+                        TodoContentActivity.EXTRA_TODO_MODEL,
+                        TodoModel::class.java
+                    )
+                } else {
+                    result.data?.getParcelableExtra(
+                        TodoContentActivity.EXTRA_TODO_MODEL
+                    )
+                }
+
+                val fragment = viewPagerAdapter.getTodoListFragment() as? TodoListFragment
+                fragment?.addTodoItem(todoModel)
+            }
+        }
         fabCreateTodo.setOnClickListener {
             createTodoLauncher.launch(
                 TodoContentActivity.newIntent(this@TodoMainActivity)

@@ -11,12 +11,8 @@ class TodoListViewModel : ViewModel() {
         MutableLiveData(TodoListUiState.init())
     val uiState: LiveData<TodoListUiState> get() = _uiState
 
-    fun addTodoItem(
-        model: TodoModel?
-    ) {
-        if (model == null) {
-            return
-        }
+    fun addTodoItem(model: TodoModel?) {
+        if (model == null) return
 
         _uiState.value = uiState.value?.copy(
             list = uiState.value?.list.orEmpty().toMutableList().apply {

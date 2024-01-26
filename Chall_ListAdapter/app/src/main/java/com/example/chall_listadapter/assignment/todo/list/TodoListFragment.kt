@@ -20,6 +20,8 @@ class TodoListFragment : Fragment() {
 
     private val viewModel: TodoListViewModel by viewModels()
 
+    private val listAdapter = TodoListAdapter()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -36,12 +38,12 @@ class TodoListFragment : Fragment() {
     }
 
     private fun initView() = with(binding) {
-
+        binding.todoList.adapter = listAdapter
     }
 
-    private fun initViewModel() = with(viewModel) {
-        uiState.observe(viewLifecycleOwner) {
-            // it.list
+    private fun initViewModel() = viewModel.also { vm ->
+        vm.uiState.observe(viewLifecycleOwner) {
+            listAdapter.submitList(it.list)
         }
     }
 
