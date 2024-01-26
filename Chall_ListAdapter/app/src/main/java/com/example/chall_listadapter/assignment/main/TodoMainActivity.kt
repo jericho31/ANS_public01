@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.viewpager2.widget.ViewPager2
-import com.example.chall_listadapter.R
 import com.example.chall_listadapter.assignment.todo.TodoModel
 import com.example.chall_listadapter.assignment.todo.content.TodoContentActivity
 import com.example.chall_listadapter.assignment.todo.list.TodoListFragment
@@ -70,7 +69,7 @@ class TodoMainActivity : AppCompatActivity() {
         }
         fabCreateTodo.setOnClickListener {
             createTodoLauncher.launch(
-                TodoContentActivity.newIntent(this@TodoMainActivity)
+                TodoContentActivity.newIntentForCreate(this@TodoMainActivity)
             )
         }
     }

@@ -1,5 +1,6 @@
 package com.example.chall_listadapter.assignment.todo.list
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,6 +18,17 @@ class TodoListViewModel : ViewModel() {
         _uiState.value = uiState.value?.copy(
             list = uiState.value?.list.orEmpty().toMutableList().apply {
                 add(model)
+            }
+        )
+    }
+
+    fun deleteTodoItem(position: Int) {
+        if (position < 0 || position >= (uiState.value?.list?.size ?: 0)) return
+
+        _uiState.value = uiState.value?.copy(
+            list = uiState.value?.list.orEmpty().toMutableList().also {
+                Log.d("myTag", "뷰모델 딜리트 포지션: $position")
+                it.removeAt(position)
             }
         )
     }
