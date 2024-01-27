@@ -26,7 +26,7 @@ class TodoListAdapter : ListAdapter<TodoModel, TodoListAdapter.TodoListViewHolde
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<TodoModel>() {
             override fun areItemsTheSame(oldItem: TodoModel, newItem: TodoModel): Boolean =
-                oldItem === newItem
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: TodoModel, newItem: TodoModel): Boolean =
                 oldItem == newItem
