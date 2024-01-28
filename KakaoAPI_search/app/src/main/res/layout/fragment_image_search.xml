@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ImageSearchFragment" >
+    tools:context=".ImageSearchFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/cl_search_top"
@@ -46,5 +46,24 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cl_search_top" />
+        app:layout_constraintTop_toBottomOf="@+id/cl_search_top"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="-185dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cl_search_top">
+
+        <TextView
+            android:id="@+id/tv_search_debug"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="tv_search_debug"
+            android:textSize="16sp" />
+    </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.kakaoapi_search
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
@@ -9,7 +10,12 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import com.example.kakaoapi_search.data.Document
 import com.example.kakaoapi_search.databinding.FragmentImageSearchBinding
+import com.example.kakaoapi_search.imagesearch.ImageSearchViewModel
+import kotlinx.coroutines.launch
 
 //// Rename parameter arguments, choose names that match
 //// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,6 +34,8 @@ class ImageSearchFragment : Fragment() {
 
     private var _binding: FragmentImageSearchBinding? = null
     private val binding get() = _binding!!
+
+    private val viewModel: ImageSearchViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +59,20 @@ class ImageSearchFragment : Fragment() {
         initView(this)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initView(frag: ImageSearchFragment) = binding.also { b ->
         b.btnSearchSearch.setOnClickListener {
             Log.d("myTag", "버튼서치서치 클릭리스너")
             hideInputAndClearFocus()
+            communicateNetwork(b.etSearchInput.text.toString())
+        }
+
+        viewModel.kakaoData.observe(viewLifecycleOwner) {
+            b.tvSearchDebug.text = it.toString() + "\n\n" +
+                    it?.body()?.meta + "\n\n" +
+                    it?.body()?.documents?.fold("") { s: String, document: Document ->
+                        s + document + "\n\n"
+                    }
         }
     }
 
@@ -62,6 +80,19 @@ class ImageSearchFragment : Fragment() {
         super.onResume()
 
         hideInputAndClearFocus()
+    }
+
+    private fun communicateNetwork(
+        query: String,
+        sort: String? = null,
+        page: Int? = null,
+        size: Int? = null
+    ) = lifecycleScope.launch() {
+        viewModel.communicateNetwork(query, sort, page, size)
+
+//        requireActivity().runOnUiThread {
+//            binding.spinnerViewGoo.setItems(goo)
+//        }
     }
 
     private fun hideInputAndClearFocus() {
