@@ -17,18 +17,19 @@ object NetworkClient {
         else
             interceptor.level = HttpLoggingInterceptor.Level.NONE
 
-        return OkHttpClient.Builder()
-            .connectTimeout(20, TimeUnit.SECONDS)
-            .readTimeout(20, TimeUnit.SECONDS)
-            .writeTimeout(20, TimeUnit.SECONDS)
-            .addNetworkInterceptor(interceptor)
-            .build()
+        return OkHttpClient.Builder().also {
+            it.connectTimeout(20, TimeUnit.SECONDS)
+            it.readTimeout(20, TimeUnit.SECONDS)
+            it.writeTimeout(20, TimeUnit.SECONDS)
+            it.addNetworkInterceptor(interceptor)
+        }.build()
     }
 
-    private val kakaoRetrofit = Retrofit.Builder()
-        .baseUrl(KAKAO_BASE_URL).addConverterFactory(GsonConverterFactory.create()).client(
-            createOkHttpClient()
-        ).build()
+    private val kakaoRetrofit = Retrofit.Builder().also {
+        it.baseUrl(KAKAO_BASE_URL)
+        it.addConverterFactory(GsonConverterFactory.create())
+        it.client(createOkHttpClient())
+    }.build()
 
     val kakaoNetwork: NetworkInterface = kakaoRetrofit.create(NetworkInterface::class.java)
 }
