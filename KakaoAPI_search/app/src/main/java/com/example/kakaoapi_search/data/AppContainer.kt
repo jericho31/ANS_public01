@@ -29,7 +29,7 @@ interface AppContainer {
  * Variables are initialized lazily and the same instance is shared across the whole app.
  */
 class DefaultAppContainer : AppContainer {
-    private val baseUrl = "https://dapi.kakao.com/"
+    private val baseUrl = "https://dapi.kakao.com"
 
     private fun createOkHttpClient(): OkHttpClient {
         val interceptor = HttpLoggingInterceptor()
@@ -44,6 +44,13 @@ class DefaultAppContainer : AppContainer {
             it.readTimeout(20, TimeUnit.SECONDS)
             it.writeTimeout(20, TimeUnit.SECONDS)
             it.addNetworkInterceptor(interceptor)
+//            // 인터셉터로도 할 수 있지만 @Headers로 대체.
+//            it.addInterceptor { chain ->
+//                val request = chain.request().newBuilder()
+//                    .addHeader("Authorization", "KakaoAK ${BuildConfig.KAKAO_API_KEY}")
+//                    .build()
+//                chain.proceed(request)
+//            }
         }.build()
     }
 
