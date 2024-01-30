@@ -68,6 +68,9 @@ class TodoListFragment : Fragment() {
 
                 Log.d("myTag", "런처 콟백 타입: $contentType, 포지션: $position")
                 when (contentType) {
+                    null -> {}
+                    TodoContentActivity.Companion.TodoContentType.CREATE -> {}
+
                     TodoContentActivity.Companion.TodoContentType.DELETE -> {
                         deleteTodoItem(position)
                     }
@@ -86,8 +89,6 @@ class TodoListFragment : Fragment() {
                         }
                         updateTodoItem(position, model)
                     }
-
-                    else -> {}
                 }
             }
         }

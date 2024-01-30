@@ -105,6 +105,8 @@ class TodoContentActivity : AppCompatActivity() {
             @Suppress("DEPRECATION")
             intent.getSerializableExtra(EXTRA_TODO_ENTRY_TYPE) as? TodoContentType
         when (contentType) {
+            null -> {}
+
             TodoContentType.CREATE -> {
                 btnDelete.isVisible = false
                 btnUpdate.isVisible = false
@@ -113,8 +115,6 @@ class TodoContentActivity : AppCompatActivity() {
             TodoContentType.UPDATE, TodoContentType.DELETE -> {
                 btnCreate.isVisible = false
             }
-
-            else -> {}
         }
     }
 }
