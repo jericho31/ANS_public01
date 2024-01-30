@@ -1,4 +1,4 @@
-package com.example.kakaoapi_search.data
+package com.example.kakaoapi_search.model
 
 import com.google.gson.annotations.SerializedName
 

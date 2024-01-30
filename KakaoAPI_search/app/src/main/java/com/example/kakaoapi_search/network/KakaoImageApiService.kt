@@ -1,12 +1,13 @@
-package com.example.kakaoapi_search
+package com.example.kakaoapi_search.network
 
-import com.example.kakaoapi_search.data.KakaoData
+import com.example.kakaoapi_search.BuildConfig
+import com.example.kakaoapi_search.model.KakaoData
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query
 
-interface NetworkInterface {
+interface KakaoImageApiService {
     @GET("v2/search/image")
     suspend fun searchImage(
         @Query("query") query: String,
