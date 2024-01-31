@@ -40,6 +40,10 @@ class ImageSearchViewModel(private val imageSearchRepository: ImageSearchReposit
         )
     }
 
+    fun setLoveById(id: String, boolean: Boolean) {
+        uiState.value?.list?.find { it.id == id }?.isLoved = boolean
+    }
+
 //    fun addTodoItem(
 //        model: TodoModel?
 //    ) {

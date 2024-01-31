@@ -10,5 +10,5 @@ data class ItemModel(
     val thumbnailURL: String,
     val displaySitename: String,
     val datetime: String,
-    val isLoved: Boolean = false
+    var isLoved: Boolean = false
 ) : Parcelable

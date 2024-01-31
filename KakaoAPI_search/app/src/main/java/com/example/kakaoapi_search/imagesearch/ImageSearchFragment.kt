@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.kakaoapi_search.databinding.FragmentImageSearchBinding
+import com.example.kakaoapi_search.model.ItemModel
 
 //// Rename parameter arguments, choose names that match
 //// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,6 +76,8 @@ class ImageSearchFragment : Fragment() {
             hideInputAndClearFocus()
             searchImage(b.etSearchInput.text.toString())
         }
+
+//        adapter.setFunSetItemLove { id, boolean -> viewModel.setLoveById(id, boolean) }
     }
 
     @SuppressLint("SetTextI18n")
@@ -125,6 +128,15 @@ class ImageSearchFragment : Fragment() {
             currentFocus?.clearFocus()
         }
     }
+
+//    fun setAdapterAddToSelected(l: SearchListAdapter.AddToSelected) {
+//        adapter.setAddToSelected(l)
+//    }
+    fun setAdapterAddToSelected(l: ((ItemModel) -> Unit)?) =
+        adapter.setAddToSelected(l)
+
+    fun setAdapterRemoveFromSelected(l: ((id: String) -> Unit)?) =
+        adapter.setFunRemoveFromSelected(l)
 
     companion object {
         /*
