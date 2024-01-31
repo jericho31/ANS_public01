@@ -1,7 +1,7 @@
 package com.example.kakaoapi_search.data
 
 import com.example.kakaoapi_search.model.ItemModel
-import com.example.kakaoapi_search.model.KakaoData
+import com.example.kakaoapi_search.model.KakaoDto
 import com.example.kakaoapi_search.network.KakaoImageApiService
 import retrofit2.Response
 
@@ -30,7 +30,7 @@ class NetworkImageSearchRepository(
         sort: String?,
         page: Int?,
         size: Int?
-    ): Response<KakaoData> = kakaoImageApiService.searchImage(query, sort, page, size)
+    ): Response<KakaoDto> = kakaoImageApiService.searchImage(query, sort, page, size)
 
     override suspend fun searchImage(
         query: String,
@@ -39,7 +39,7 @@ class NetworkImageSearchRepository(
         size: Int?
     ): List<ItemModel> = convertResponseToItems(searchImageGetResponse(query, sort, page, size))
 
-    private fun convertResponseToItems(response: Response<KakaoData>): List<ItemModel> {
+    private fun convertResponseToItems(response: Response<KakaoDto>): List<ItemModel> {
         if (response.body() == null) return emptyList()
 
         return response.body()!!.documents.map { doc ->

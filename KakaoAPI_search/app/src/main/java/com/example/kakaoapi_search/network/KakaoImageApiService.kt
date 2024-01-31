@@ -1,7 +1,7 @@
 package com.example.kakaoapi_search.network
 
 import com.example.kakaoapi_search.BuildConfig
-import com.example.kakaoapi_search.model.KakaoData
+import com.example.kakaoapi_search.model.KakaoDto
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Headers
@@ -15,5 +15,5 @@ interface KakaoImageApiService {
         @Query("sort") sort: String? = null,
         @Query("page") page: Int? = null,
         @Query("size") size: Int? = null
-    ): Response<KakaoData>
+    ): Response<KakaoDto>
 }

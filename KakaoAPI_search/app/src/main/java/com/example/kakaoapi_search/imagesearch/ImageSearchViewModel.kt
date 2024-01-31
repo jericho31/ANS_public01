@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.kakaoapi_search.data.ImageSearchRepository
-import com.example.kakaoapi_search.model.KakaoData
+import com.example.kakaoapi_search.model.KakaoDto
 import com.example.kakaoapi_search.myContainer
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -19,13 +19,13 @@ class ImageSearchViewModel(private val imageSearchRepository: ImageSearchReposit
         MutableLiveData(SearchListUiState.init())
     val uiState: LiveData<SearchListUiState> get() = _uiState
 
-    private var _kakaoData: MutableLiveData<Response<KakaoData>?> =
+    private var _kakaoDto: MutableLiveData<Response<KakaoDto>?> =
         MutableLiveData()
-    val kakaoData: LiveData<Response<KakaoData>?> get() = _kakaoData
+    val kakaoDto: LiveData<Response<KakaoDto>?> get() = _kakaoDto
 
     /**
      * Gets Kakao query data from the Kakao image search API Retrofit service and updates the
-     * [_kakaoData] [] [MutableLiveData].
+     * [_kakaoDto] [] [MutableLiveData].
      */
     fun searchImage(
         query: String,

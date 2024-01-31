@@ -66,7 +66,7 @@ class ImageSearchFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun initViewModel(b: FragmentImageSearchBinding) = viewModel.also { vm ->
-        viewModel.kakaoData.observe(viewLifecycleOwner) {
+        viewModel.kakaoDto.observe(viewLifecycleOwner) {
             Log.d("kakaoData ::", "$it\n${it?.body()?.meta}")  //ddd
 //            b.tvSearchDebug.text = it.toString() + "\n\n" +
 //                    it?.body()?.meta + "\n\n" +

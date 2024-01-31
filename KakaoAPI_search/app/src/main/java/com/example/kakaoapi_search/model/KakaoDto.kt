@@ -2,7 +2,7 @@ package com.example.kakaoapi_search.model
 
 import com.google.gson.annotations.SerializedName
 
-data class KakaoData(
+data class KakaoDto(
     val documents: List<Document>,
     val meta: Meta
 )
