@@ -54,6 +54,31 @@ class DefaultAppContainer : AppContainer {
         }.build()
     }
 
+
+//    class DateTypeAdapter : JsonDeserializer<Date>, JsonSerializer<Date> {
+//        private val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX", Locale.US)
+//        private val outputFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA)
+//
+//        override fun deserialize(json: JsonElement, typeOfT: Type, context: JsonDeserializationContext): Date {
+//            return inputFormat.parse(json.asString)!!
+//        }
+//
+//        override fun serialize(src: Date, typeOfSrc: Type, context: JsonSerializationContext): JsonElement {
+//            return JsonPrimitive(outputFormat.format(src))
+//        }
+//    }
+//
+//    private val gson = GsonBuilder()
+//        .registerTypeAdapter(Date::class.java, DateTypeAdapter())
+//        .create()
+
+//    private val gson = GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create()
+
+    /*
+    위에 애들은 gson이 특정 형식으로 오는 날짜 json 데이터를 Date 타입으로 넣을 수 있도록 하기 위한 건가?
+    그러면 내 입맛대로 형식 바꿔 출력하려면 결국 repository 같은 곳에서 포맷 만들어서 바꿔줘야 하는건가?
+     */
+
     /**
      * Use the Retrofit builder to build a retrofit object using a GsonConverterFactory
      */

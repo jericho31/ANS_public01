@@ -1,6 +1,7 @@
 package com.example.kakaoapi_search.model
 
 import com.google.gson.annotations.SerializedName
+import java.util.Date
 
 data class KakaoDto(
     val documents: List<Document>,
@@ -9,7 +10,8 @@ data class KakaoDto(
 
 data class Document(
     val collection: Collection,
-    val datetime: String,
+    /** gson으로 포맷 따로 지정 안해도, ISO 포맷으로 날아오므로 알아서 Date로 넣어준다. */
+    val datetime: Date,
 
     @SerializedName("display_sitename")
     val displaySitename: String,
