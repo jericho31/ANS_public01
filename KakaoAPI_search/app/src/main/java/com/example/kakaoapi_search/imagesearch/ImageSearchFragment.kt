@@ -1,4 +1,4 @@
-package com.example.kakaoapi_search
+package com.example.kakaoapi_search.imagesearch
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,9 +11,8 @@ import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.kakaoapi_search.databinding.FragmentImageSearchBinding
-import com.example.kakaoapi_search.imagesearch.ImageSearchViewModel
-import com.example.kakaoapi_search.model.Document
 
 //// Rename parameter arguments, choose names that match
 //// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +33,8 @@ class ImageSearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ImageSearchViewModel by viewModels { ImageSearchViewModel.Factory }
-//    private val viewModel: ImageSearchViewModel by viewModels()
+
+    private val adapter = SearchListAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,27 +52,47 @@ class ImageSearchFragment : Fragment() {
         return binding.root
     }
 
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initView(this)
+        initViewModel(binding)
     }
 
     @SuppressLint("SetTextI18n")
-    private fun initView(frag: ImageSearchFragment) = binding.also { b ->
-        b.btnSearchSearch.setOnClickListener {
-            Log.d("myTag", "버튼서치서치 클릭리스너")
-            hideInputAndClearFocus()
-            searchImage(b.etSearchInput.text.toString())
-        }
-
+    private fun initViewModel(b: FragmentImageSearchBinding) = viewModel.also { vm ->
         viewModel.kakaoData.observe(viewLifecycleOwner) {
             Log.d("kakaoData ::", "$it\n${it?.body()?.meta}")  //ddd
-            b.tvSearchDebug.text = it.toString() + "\n\n" +
-                    it?.body()?.meta + "\n\n" +
-                    it?.body()?.documents?.fold("") { s: String, document: Document ->
-                        s + document + "\n\n"
-                    }
+//            b.tvSearchDebug.text = it.toString() + "\n\n" +
+//                    it?.body()?.meta + "\n\n" +
+//                    it?.body()?.documents?.fold("") { s: String, document: Document ->
+//                        s + document + "\n\n"
+//                    }  //ddd
+        }
+
+        vm.uiState.observe(viewLifecycleOwner) {
+            adapter.submitList(it.list)
+            b.tvSearchDebug.text = it.list.fold("") { acc, model ->
+                "$acc\n\n$model"
+            }  //ddd
+        }
+    }
+
+    private fun initView(frag: ImageSearchFragment) = binding.also { b ->
+        b.rvSearch.adapter = adapter
+        b.rvSearch.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+//        b.rvSearch.layoutManager = LinearLayoutManager(requireContext())
+
+        b.btnSearchSearch.setOnClickListener {
+            Log.d("myTag", "버튼서치서치 클릭리스너")  //ddd
+            hideInputAndClearFocus()
+            searchImage(b.etSearchInput.text.toString())
         }
     }
 

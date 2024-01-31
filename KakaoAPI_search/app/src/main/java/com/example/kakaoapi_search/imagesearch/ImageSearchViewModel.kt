@@ -15,23 +15,13 @@ import retrofit2.Response
 
 class ImageSearchViewModel(private val imageSearchRepository: ImageSearchRepository) : ViewModel() {
 
-//    private val _uiState: MutableLiveData<TodoListUiState> =
-//        MutableLiveData(TodoListUiState.init())
-//    val uiState: LiveData<TodoListUiState> get() = _uiState
+    private val _uiState: MutableLiveData<SearchListUiState> =
+        MutableLiveData(SearchListUiState.init())
+    val uiState: LiveData<SearchListUiState> get() = _uiState
 
     private var _kakaoData: MutableLiveData<Response<KakaoData>?> =
         MutableLiveData()
     val kakaoData: LiveData<Response<KakaoData>?> get() = _kakaoData
-
-//    suspend fun searchImage(
-//        query: String,
-//        sort: String? = null,
-//        page: Int? = null,
-//        size: Int? = null
-//    ) {
-//        _kakaoData.value = NetworkClient.kakaoNetwork.searchImage(query, sort, page, size)
-//        Log.d("kakaoData ::", kakaoData.value.toString())
-//    }
 
     /**
      * Gets Kakao query data from the Kakao image search API Retrofit service and updates the
@@ -43,7 +33,11 @@ class ImageSearchViewModel(private val imageSearchRepository: ImageSearchReposit
         page: Int? = null,
         size: Int? = null
     ) = viewModelScope.launch {
-        _kakaoData.postValue(imageSearchRepository.searchImage(query, sort, page, size))
+        _uiState.postValue(
+            uiState.value?.copy(
+                list = imageSearchRepository.searchImage(query, sort, page, size)
+            )
+        )
     }
 
 //    fun addTodoItem(

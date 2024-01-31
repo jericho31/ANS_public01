@@ -7,6 +7,7 @@ import androidx.fragment.app.commit
 import com.example.kakaoapi_search.data.AppContainer
 import com.example.kakaoapi_search.data.DefaultAppContainer
 import com.example.kakaoapi_search.databinding.ActivityMainBinding
+import com.example.kakaoapi_search.imagesearch.ImageSearchFragment
 
 /** AppContainer instance used by the rest of classes to obtain dependencies */
 val myContainer: AppContainer = DefaultAppContainer()

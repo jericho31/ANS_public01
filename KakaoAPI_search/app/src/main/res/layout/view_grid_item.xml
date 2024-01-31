@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="4dp"
+    android:paddingVertical="4dp">
+
+    <ImageView
+        android:id="@+id/iv_item_thumbnail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="thumbnail"
+        android:maxHeight="300dp"
+        android:minHeight="100dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <ImageView
+        android:id="@+id/iv_item_love"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="love icon"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/love_no_line"
+        tools:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/ll_item"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_item_thumbnail">
+
+        <TextView
+            android:id="@+id/tv_item_site"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이미지 사이트 이름"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_item_datetime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="날짜 시간 표시" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
