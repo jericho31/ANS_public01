@@ -64,9 +64,22 @@ class ImageSearchFragment : Fragment() {
         initViewModel(binding)
     }
 
+    private fun initView(frag: ImageSearchFragment) = binding.also { b ->
+        b.rvSearch.adapter = adapter
+        b.rvSearch.layoutManager =
+            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+//        b.rvSearch.layoutManager = LinearLayoutManager(requireContext())
+
+        b.btnSearchSearch.setOnClickListener {
+            Log.d("myTag", "버튼서치서치 클릭리스너")  //ddd
+            hideInputAndClearFocus()
+            searchImage(b.etSearchInput.text.toString())
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     private fun initViewModel(b: FragmentImageSearchBinding) = viewModel.also { vm ->
-        viewModel.kakaoDto.observe(viewLifecycleOwner) {
+        vm.kakaoDto.observe(viewLifecycleOwner) {
             Log.d("kakaoData ::", "$it\n${it?.body()?.meta}")  //ddd
 //            b.tvSearchDebug.text = it.toString() + "\n\n" +
 //                    it?.body()?.meta + "\n\n" +
@@ -80,19 +93,6 @@ class ImageSearchFragment : Fragment() {
             b.tvSearchDebug.text = it.list.fold("") { acc, model ->
                 "$acc\n\n$model"
             }  //ddd
-        }
-    }
-
-    private fun initView(frag: ImageSearchFragment) = binding.also { b ->
-        b.rvSearch.adapter = adapter
-        b.rvSearch.layoutManager =
-            StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//        b.rvSearch.layoutManager = LinearLayoutManager(requireContext())
-
-        b.btnSearchSearch.setOnClickListener {
-            Log.d("myTag", "버튼서치서치 클릭리스너")  //ddd
-            hideInputAndClearFocus()
-            searchImage(b.etSearchInput.text.toString())
         }
     }
 
