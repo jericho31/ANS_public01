@@ -30,13 +30,13 @@ class MyboxFragment(private val selectedItems: MutableList<ItemModel>) : Fragmen
 
     private val adapter = MyboxAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-//        }
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+////        arguments?.let {
+////            param1 = it.getString(ARG_PARAM1)
+////            param2 = it.getString(ARG_PARAM2)
+////        }
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,13 +62,28 @@ class MyboxFragment(private val selectedItems: MutableList<ItemModel>) : Fragmen
         b.rvMybox.adapter = adapter
         b.rvMybox.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        adapter.submitList(ArrayList(selectedItems))
+        // TODO: initView에서 이렇게만 했을 뿐인데 보관함 돌아올때마다 적용된다고...?
+        // TODO: 아 이거는 setFragment가 매번 프래그먼트를 생성해서 onViewCreated 호출되는거라 바꿔줘야함.
+        // TODO: ...인 줄 알았는데 뒤로가기로 돌아가도 되네?? 뭐냐 진짜
+        b.tvMyboxNothing.isVisible = selectedItems.size == 0
+
+
+        adapter.setFunRemoveItemFromSelected { id ->
+            val pos = selectedItems.indexOfFirst { it.id == id }
+            if (pos >= 0) {
+                selectedItems.removeAt(pos)
+                adapter.submitList(ArrayList(selectedItems)) {
+                    b.tvMyboxNothing.isVisible = selectedItems.size == 0
+                }
+            }
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
-        adapter.submitList(selectedItems)
-        binding.tvMyboxNothing.isVisible = adapter.itemCount == 0
-    }
+//    override fun onResume() {
+//        super.onResume()
+//    }
 
 //    @SuppressLint("SetTextI18n")
 //    private fun initViewModel(b: FragmentMyboxBinding) = viewModel.also { vm ->
@@ -90,7 +105,7 @@ class MyboxFragment(private val selectedItems: MutableList<ItemModel>) : Fragmen
 //    }
 
     companion object {
-        /**
+        /*
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *

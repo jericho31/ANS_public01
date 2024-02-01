@@ -22,9 +22,16 @@ class MyboxAdapter : ListAdapter<ItemModel, MyboxAdapter.MyboxViewHolder>(diffUt
                 b.root.setOnClickListener {
                     Log.d("myTag:마이박스어댑터 아이템클릭", "$layoutPosition: ${getItem(layoutPosition)}")
 
+                    model.isLoved = false
+                    removeItemFromSelected?.invoke(model.id)
                 }
             }
         }
+    }
+
+    private var removeItemFromSelected: ((id: String) -> Unit)? = null
+    fun setFunRemoveItemFromSelected(l: ((id: String) -> Unit)?) {
+        removeItemFromSelected = l
     }
 
     companion object {
