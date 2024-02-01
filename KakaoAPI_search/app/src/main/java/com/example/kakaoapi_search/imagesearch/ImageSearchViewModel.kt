@@ -19,13 +19,9 @@ class ImageSearchViewModel(private val imageSearchRepository: ImageSearchReposit
         MutableLiveData(SearchListUiState.init())
     val uiState: LiveData<SearchListUiState> get() = _uiState
 
-    private var _kakaoDto: MutableLiveData<Response<KakaoDto>?> =
-        MutableLiveData()
-    val kakaoDto: LiveData<Response<KakaoDto>?> get() = _kakaoDto
-
     /**
      * Gets Kakao query data from the Kakao image search API Retrofit service and updates the
-     * [_kakaoDto] [] [MutableLiveData].
+     * [_uiState] [] [MutableLiveData].
      */
     fun searchImage(
         query: String,
@@ -39,24 +35,6 @@ class ImageSearchViewModel(private val imageSearchRepository: ImageSearchReposit
             )
         )
     }
-
-    fun setLoveById(id: String, boolean: Boolean) {
-        uiState.value?.list?.find { it.id == id }?.isLoved = boolean
-    }
-
-//    fun addTodoItem(
-//        model: TodoModel?
-//    ) {
-//        if (model == null) {
-//            return
-//        }
-//
-//        _uiState.value = uiState.value?.copy(
-//            list = uiState.value?.list.orEmpty().toMutableList().apply {
-//                add(model)
-//            }
-//        )
-//    }
 
     /**
      * Factory for [ImageSearchViewModel] that takes [ImageSearchRepository] as a dependency

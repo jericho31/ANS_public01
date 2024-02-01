@@ -29,11 +29,6 @@ class MyboxAdapter : ListAdapter<ItemModel, MyboxAdapter.MyboxViewHolder>(diffUt
         }
     }
 
-    private var removeItemFromSelected: ((id: String) -> Unit)? = null
-    fun setFunRemoveItemFromSelected(l: ((id: String) -> Unit)?) {
-        removeItemFromSelected = l
-    }
-
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<ItemModel>() {
             override fun areItemsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean =
@@ -44,8 +39,6 @@ class MyboxAdapter : ListAdapter<ItemModel, MyboxAdapter.MyboxViewHolder>(diffUt
         }
     }
 
-    // TODO: 좋아요 삭제 인터페이스
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyboxViewHolder =
         MyboxViewHolder(
             ViewGridItemBinding
@@ -54,5 +47,10 @@ class MyboxAdapter : ListAdapter<ItemModel, MyboxAdapter.MyboxViewHolder>(diffUt
 
     override fun onBindViewHolder(holder: MyboxViewHolder, position: Int) {
         holder.onBind(getItem(position))
+    }
+
+    private var removeItemFromSelected: ((id: String) -> Unit)? = null
+    fun setFunRemoveItemFromSelected(l: ((id: String) -> Unit)?) {
+        removeItemFromSelected = l
     }
 }

@@ -34,6 +34,7 @@ class NetworkImageSearchRepository(
         size: Int?
     ): Response<KakaoDto> = kakaoImageApiService.searchImage(query, sort, page, size)
 
+    // 쿼리 받은 데이터를 내 모델에 맞게 가공해서 반환
     override suspend fun searchImage(
         query: String,
         sort: String?,

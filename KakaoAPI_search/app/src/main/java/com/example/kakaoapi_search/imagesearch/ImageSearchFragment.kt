@@ -37,13 +37,13 @@ class ImageSearchFragment : Fragment() {
 
     private val adapter = SearchListAdapter()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-//        arguments?.let {
-//            param1 = it.getString(ARG_PARAM1)
-//            param2 = it.getString(ARG_PARAM2)
-//        }
-    }
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+////        arguments?.let {
+////            param1 = it.getString(ARG_PARAM1)
+////            param2 = it.getString(ARG_PARAM2)
+////        }
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,33 +69,21 @@ class ImageSearchFragment : Fragment() {
         b.rvSearch.adapter = adapter
         b.rvSearch.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-//        b.rvSearch.layoutManager = LinearLayoutManager(requireContext())
 
         b.btnSearchSearch.setOnClickListener {
             Log.d("myTag", "버튼서치서치 클릭리스너")  //ddd
             hideInputAndClearFocus()
             searchImage(b.etSearchInput.text.toString())
         }
-
-//        adapter.setFunSetItemLove { id, boolean -> viewModel.setLoveById(id, boolean) }
     }
 
     @SuppressLint("SetTextI18n")
     private fun initViewModel(b: FragmentImageSearchBinding) = viewModel.also { vm ->
-        vm.kakaoDto.observe(viewLifecycleOwner) {
-            Log.d("kakaoData ::", "$it\n${it?.body()?.meta}")  //ddd
-//            b.tvSearchDebug.text = it.toString() + "\n\n" +
-//                    it?.body()?.meta + "\n\n" +
-//                    it?.body()?.documents?.fold("") { s: String, document: Document ->
-//                        s + document + "\n\n"
-//                    }  //ddd
-        }
-
         vm.uiState.observe(viewLifecycleOwner) {
             adapter.submitList(it.list)
-            b.tvSearchDebug.text = it.list.fold("") { acc, model ->
-                "$acc\n\n$model"
-            }  //ddd
+//            b.tvSearchDebug.text = it.list.fold("") { acc, model ->
+//                "$acc\n\n$model"
+//            }  //ddd
         }
     }
 
@@ -112,13 +100,9 @@ class ImageSearchFragment : Fragment() {
         size: Int? = null
     ) = viewModel.searchImage(query, sort, page, size)
 
-//        requireActivity().runOnUiThread {
-//            binding.spinnerViewGoo.setItems(goo)
-//        }
-
     private fun hideInputAndClearFocus() {
         requireActivity().apply {
-            // TODO: 포커스 어떻게 없애냐...
+            // TODO: 포커스 어떻게 없애냐... 근데 없애지 않아도 좋을 듯...?
             window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN)
             window.currentFocus?.clearFocus()
             currentFocus?.clearFocus()
@@ -129,9 +113,7 @@ class ImageSearchFragment : Fragment() {
         }
     }
 
-//    fun setAdapterAddToSelected(l: SearchListAdapter.AddToSelected) {
-//        adapter.setAddToSelected(l)
-//    }
+    // 뷰홀더 아이템클릭 -> 메인액티비티 리스트 접근을 위한 람다식 넘겨주기
     fun setAdapterAddToSelected(l: ((ItemModel) -> Unit)?) =
         adapter.setAddToSelected(l)
 
