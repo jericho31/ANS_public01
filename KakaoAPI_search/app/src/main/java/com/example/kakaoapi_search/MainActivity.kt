@@ -30,14 +30,18 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView(ac: AppCompatActivity) = binding.also { b ->
-        switchFragment(imgSrcFrag)
+        supportFragmentManager.commit {
+            add(binding.flMain.id, imgSrcFrag)
+            add(binding.flMain.id, myboxFrag)
+            hide(myboxFrag)
+        }
         b.btnMainSearch.setOnClickListener {
-            switchFragment(imgSrcFrag)
 //            imgSrcFrag.update()
+            switchFragment(imgSrcFrag)
         }
         b.btnMainMybox.setOnClickListener {
+            myboxFrag.update()
             switchFragment(myboxFrag)
-//            myboxFrag.update()
         }
 
         // 뷰홀더 아이템클릭에서 메인액티비티의 '선택된 이미지 리스트'에 접근하기 위한 람다식 전달
@@ -45,20 +49,21 @@ class MainActivity : AppCompatActivity() {
         imgSrcFrag.setAdapterRemoveFromSelected { removeFromSelected(it) }
     }
 
-    // 프래그먼트가 계속 새로 생성돼서 변경...인데 갱신 안되는 문제를 아직 못잡아서 일단 사용
-    private fun switchFragment(frag: Fragment) {
-        supportFragmentManager.commit {
-            replace(binding.flMain.id, frag)
-            setReorderingAllowed(true)
-            addToBackStack("")
-        }
-    }
-
-//    private fun switchFragment(fragment: Fragment) = supportFragmentManager.commit {
-//        supportFragmentManager.fragments.forEach { hide(it) }
-//        if (fragment.isAdded) show(fragment)
-//        else add(binding.flMain.id, fragment)
+//    // 프래그먼트가 계속 새로 생성돼서 변경
+//    private fun switchFragment(frag: Fragment) {
+//        supportFragmentManager.commit {
+//            replace(binding.flMain.id, frag)
+//            setReorderingAllowed(true)
+//            addToBackStack("")
+//        }
 //    }
+
+    // add는 따로 다 해두고 전환할 때는 hide, show만 하자. 프래그먼트가 계속 추가되는 게 아니라서 확인 작업 불필요.
+    // (그리고 처음 update 호출할 때 commit은 비동기인가 해서 binding이 null이라고 터지는 문제도 해결할 겸)
+    private fun switchFragment(fragment: Fragment) = supportFragmentManager.commit {
+        supportFragmentManager.fragments.forEach { hide(it) }
+        show(fragment)
+    }
 
     fun addToSelected(item: ItemModel) = selectedItems.add(item)
     fun removeAtFromSelected(pos: Int) = selectedItems.removeAt(pos)

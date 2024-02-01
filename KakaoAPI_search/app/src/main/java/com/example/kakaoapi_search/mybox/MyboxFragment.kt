@@ -67,6 +67,7 @@ class MyboxFragment(private val selectedItems: MutableList<ItemModel>) : Fragmen
         adapter.setFunRemoveItemFromSelected { id ->
             val pos = selectedItems.indexOfFirst { it.id == id }
             if (pos >= 0) {
+                selectedItems[pos].isLoved = false  // 참조라서 가능
                 selectedItems.removeAt(pos)
                 update()
             }
@@ -74,13 +75,14 @@ class MyboxFragment(private val selectedItems: MutableList<ItemModel>) : Fragmen
     }
 
     override fun onResume() {
-        super.onResume()
         update()
+        super.onResume()
     }
 
     fun update() {
-        adapter.submitList(ArrayList(selectedItems))
-        binding.tvMyboxNothing.isVisible = selectedItems.size == 0
+        adapter.submitList(ArrayList(selectedItems)) {
+            binding.tvMyboxNothing.isVisible = selectedItems.size == 0
+        }
     }
 
 //    @SuppressLint("SetTextI18n")

@@ -22,7 +22,7 @@ class MyboxAdapter : ListAdapter<ItemModel, MyboxAdapter.MyboxViewHolder>(diffUt
                 b.root.setOnClickListener {
                     Log.d("myTag:마이박스어댑터 아이템클릭", "$layoutPosition: ${getItem(layoutPosition)}")
 
-                    model.isLoved = false
+//                    model.isLoved = false  // 프래그먼트 람다식에서 처리
                     removeItemFromSelected?.invoke(model.id)
                 }
             }
