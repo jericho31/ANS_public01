@@ -30,35 +30,35 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initView(ac: AppCompatActivity) = binding.also { b ->
-        setFragment(imgSrcFrag)
-
+        switchFragment(imgSrcFrag)
         b.btnMainSearch.setOnClickListener {
-            setFragment(imgSrcFrag)
+            switchFragment(imgSrcFrag)
+//            imgSrcFrag.update()
         }
         b.btnMainMybox.setOnClickListener {
-            setFragment(myboxFrag)
+            switchFragment(myboxFrag)
+//            myboxFrag.update()
         }
 
-//        imgSrcFrag.setAdapterOnItemClickListener(object : SearchListAdapter.OnItemClickListener {
-//            override fun onItemClick(itemModel: ItemModel) {
-//                addToSelected(itemModel)
-//            }
-//        })
-        imgSrcFrag.setAdapterAddToSelected {
-            addToSelected(it)
-        }
-        imgSrcFrag.setAdapterRemoveFromSelected {
-            removeFromSelected(it)
-        }
+        // 뷰홀더 아이템클릭에서 메인액티비티의 '선택된 이미지 리스트'에 접근하기 위한 람다식 전달
+        imgSrcFrag.setAdapterAddToSelected { addToSelected(it) }
+        imgSrcFrag.setAdapterRemoveFromSelected { removeFromSelected(it) }
     }
 
-    private fun setFragment(frag: Fragment) {
+    // 프래그먼트가 계속 새로 생성돼서 변경...인데 갱신 안되는 문제를 아직 못잡아서 일단 사용
+    private fun switchFragment(frag: Fragment) {
         supportFragmentManager.commit {
             replace(binding.flMain.id, frag)
             setReorderingAllowed(true)
             addToBackStack("")
         }
     }
+
+//    private fun switchFragment(fragment: Fragment) = supportFragmentManager.commit {
+//        supportFragmentManager.fragments.forEach { hide(it) }
+//        if (fragment.isAdded) show(fragment)
+//        else add(binding.flMain.id, fragment)
+//    }
 
     fun addToSelected(item: ItemModel) = selectedItems.add(item)
     fun removeAtFromSelected(pos: Int) = selectedItems.removeAt(pos)

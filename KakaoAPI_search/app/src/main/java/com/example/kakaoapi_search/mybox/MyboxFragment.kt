@@ -54,36 +54,34 @@ class MyboxFragment(private val selectedItems: MutableList<ItemModel>) : Fragmen
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        initView(this)
+        initView()
 //        initViewModel(binding)
     }
 
-    private fun initView(frag: MyboxFragment) = binding.also { b ->
+    private fun initView() = binding.also { b ->
         b.rvMybox.adapter = adapter
         b.rvMybox.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
 
-        adapter.submitList(ArrayList(selectedItems))
-        // TODO: initView에서 이렇게만 했을 뿐인데 보관함 돌아올때마다 적용된다고...?
-        // TODO: 아 이거는 setFragment가 매번 프래그먼트를 생성해서 onViewCreated 호출되는거라 바꿔줘야함.
-        // TODO: ...인 줄 알았는데 뒤로가기로 돌아가도 되네?? 뭐냐 진짜
-        b.tvMyboxNothing.isVisible = selectedItems.size == 0
-
-
+        // 뷰홀더 아이템 클릭 시 액티비티의 '선택된 이미지 리스트'에서 제거하기 위한 람다식
         adapter.setFunRemoveItemFromSelected { id ->
             val pos = selectedItems.indexOfFirst { it.id == id }
             if (pos >= 0) {
                 selectedItems.removeAt(pos)
-                adapter.submitList(ArrayList(selectedItems)) {
-                    b.tvMyboxNothing.isVisible = selectedItems.size == 0
-                }
+                update()
             }
         }
     }
 
-//    override fun onResume() {
-//        super.onResume()
-//    }
+    override fun onResume() {
+        super.onResume()
+        update()
+    }
+
+    fun update() {
+        adapter.submitList(ArrayList(selectedItems))
+        binding.tvMyboxNothing.isVisible = selectedItems.size == 0
+    }
 
 //    @SuppressLint("SetTextI18n")
 //    private fun initViewModel(b: FragmentMyboxBinding) = viewModel.also { vm ->
