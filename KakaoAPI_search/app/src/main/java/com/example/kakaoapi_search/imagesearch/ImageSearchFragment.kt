@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.kakaoapi_search.Extra
 import com.example.kakaoapi_search.SharedViewModel
 import com.example.kakaoapi_search.databinding.FragmentImageSearchBinding
 import com.example.kakaoapi_search.model.ItemModel
@@ -73,11 +74,14 @@ class ImageSearchFragment : Fragment() {
         b.rvSearch.adapter = adapter
         b.rvSearch.layoutManager =
             StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+        b.etSearchInput.setText(loadPref(Extra.search_input))
 
         b.btnSearchSearch.setOnClickListener {
             Log.d("myTag", "버튼서치서치 클릭리스너")  //ddd
             hideInputAndClearFocus()
-            searchImage(b.etSearchInput.text.toString())
+            val input = b.etSearchInput.text.toString()
+            searchImage(input)
+            savePref(Extra.search_input, input)
         }
     }
 
@@ -126,6 +130,12 @@ class ImageSearchFragment : Fragment() {
 
     fun setAdapterRemoveFromSelected(l: ((id: String) -> Unit)?) =
         adapter.setFunRemoveFromSelected(l)
+
+    private fun savePref(key: String, value: String) = requireContext()
+        .getSharedPreferences(Extra.pref, 0).edit().putString(key, value).apply()
+
+    private fun loadPref(key: String, defValue: String? = null) = requireContext()
+        .getSharedPreferences(Extra.pref, 0).getString(key, defValue)
 
     companion object {
         /*
