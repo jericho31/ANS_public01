@@ -1,6 +1,7 @@
 package com.example.kakaoapi_search.mybox
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,21 +71,21 @@ class MyboxFragment(private val selectedItems: MutableList<ItemModel>) : Fragmen
         // 뷰홀더 아이템 클릭 시 액티비티의 '선택된 이미지 리스트'에서 제거하기 위한 람다식
         adapter.setFunRemoveItemFromSelected { id ->
             val pos = selectedItems.indexOfFirst { it.id == id }
-            if (pos >= 0) {
-                // TODO: 아직 손보는중
-                val newItem = selectedItems[pos].copy(isLoved = false)
-                selectedItems[pos] = newItem
-
-                sharedViewModel._uiState.value = ArrayList(
-                    sharedViewModel._uiState.value!!
-                ).also { list ->
-                    list[list.indexOfFirst { it.id == id }] = newItem
-                }
-
-//                selectedItems[pos].isLoved = false  // 참조라서 가능...한데 라이브데이터가 인지 못함.
-                selectedItems.removeAt(pos)
-                update()
+            if (pos < 0) {
+                Log.e("myTag:removeItemFromSelected", "error: id 같은 게 없음")
+                return@setFunRemoveItemFromSelected
             }
+
+            val list = sharedViewModel._uiState.value!!
+            val pos2 = list.indexOfFirst { it.id == id }
+            if (pos2 >= 0) {
+                sharedViewModel._uiState.value = ArrayList(list).also { newList ->
+                    newList[pos2] = selectedItems[pos].copy(isLoved = false)
+                }
+            }
+
+            selectedItems.removeAt(pos)
+            update()
         }
     }
 
