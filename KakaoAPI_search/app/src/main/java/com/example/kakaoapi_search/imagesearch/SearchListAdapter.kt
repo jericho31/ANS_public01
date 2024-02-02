@@ -39,11 +39,28 @@ class SearchListAdapter : ListAdapter<ItemModel, SearchListAdapter.SearchListVie
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<ItemModel>() {
-            override fun areItemsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean =
-                oldItem.id == newItem.id
+//            override fun areItemsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean =
+//                oldItem.id == newItem.id
+//
+//            override fun areContentsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean =
+//                oldItem == newItem
 
-            override fun areContentsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean =
-                oldItem == newItem
+            //ddd
+            override fun areItemsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean {
+                val b = oldItem.id == newItem.id
+                if (!b) {
+                    Log.d("myTag:아이템 다름", "$oldItem\n$newItem")
+                }
+                return b
+            }
+
+            override fun areContentsTheSame(oldItem: ItemModel, newItem: ItemModel): Boolean {
+                val b = oldItem == newItem
+                if (!b) {
+                    Log.d("myTag:컨텐트 다름", "$oldItem\n$newItem")
+                }
+                return b
+            }
         }
     }
 

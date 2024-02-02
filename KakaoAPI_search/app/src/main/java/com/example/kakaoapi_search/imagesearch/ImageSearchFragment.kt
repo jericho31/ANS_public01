@@ -10,8 +10,10 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.kakaoapi_search.SharedViewModel
 import com.example.kakaoapi_search.databinding.FragmentImageSearchBinding
 import com.example.kakaoapi_search.model.ItemModel
 
@@ -33,7 +35,9 @@ class ImageSearchFragment : Fragment() {
     private var _binding: FragmentImageSearchBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel: ImageSearchViewModel by viewModels { ImageSearchViewModel.Factory }
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+    private val viewModel: ImageSearchViewModel
+            by viewModels { ImageSearchViewModel.createFactory(sharedViewModel) }
 
     private val adapter = SearchListAdapter()
 
@@ -80,7 +84,10 @@ class ImageSearchFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     private fun initViewModel(b: FragmentImageSearchBinding) = viewModel.also { vm ->
         vm.uiState.observe(viewLifecycleOwner) {
-            adapter.submitList(it.list)
+            Log.d("myTag:검색프래그먼트 uiState 옵저버", it.toString())  //ddd
+            adapter.submitList(it)  // 리스트 객체 새로 만들어 넣지 않아도 괜찮은듯? 게터 거치면서 새로 생성되나??
+//            adapter.submitList(ArrayList(it))
+
 //            b.tvSearchDebug.text = it.list.fold("") { acc, model ->
 //                "$acc\n\n$model"
 //            }  //ddd

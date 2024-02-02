@@ -6,7 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.kakaoapi_search.SharedViewModel
 import com.example.kakaoapi_search.databinding.FragmentMyboxBinding
 import com.example.kakaoapi_search.model.ItemModel
 
@@ -27,6 +29,8 @@ class MyboxFragment(private val selectedItems: MutableList<ItemModel>) : Fragmen
 
     private var _binding: FragmentMyboxBinding? = null
     private val binding get() = _binding!!
+
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
     private val adapter = MyboxAdapter()
 
@@ -67,7 +71,17 @@ class MyboxFragment(private val selectedItems: MutableList<ItemModel>) : Fragmen
         adapter.setFunRemoveItemFromSelected { id ->
             val pos = selectedItems.indexOfFirst { it.id == id }
             if (pos >= 0) {
-                selectedItems[pos].isLoved = false  // 참조라서 가능
+                // TODO: 아직 손보는중
+                val newItem = selectedItems[pos].copy(isLoved = false)
+                selectedItems[pos] = newItem
+
+                sharedViewModel._uiState.value = ArrayList(
+                    sharedViewModel._uiState.value!!
+                ).also { list ->
+                    list[list.indexOfFirst { it.id == id }] = newItem
+                }
+
+//                selectedItems[pos].isLoved = false  // 참조라서 가능...한데 라이브데이터가 인지 못함.
                 selectedItems.removeAt(pos)
                 update()
             }
