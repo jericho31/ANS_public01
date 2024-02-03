@@ -2,9 +2,9 @@ package com.example.chall_listadapter.assignment.main
 
 import android.app.Activity
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.chall_listadapter.assignment.todo.TodoModel
 import com.example.chall_listadapter.assignment.todo.content.TodoContentActivity

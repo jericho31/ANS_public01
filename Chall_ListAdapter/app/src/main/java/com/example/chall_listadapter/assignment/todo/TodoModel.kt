@@ -9,4 +9,5 @@ data class TodoModel(
     val id: UUID = UUID.randomUUID(),
     val title: String? = null,
     val content: String? = null,
+    var isBookmarked: Boolean = false
 ) : Parcelable

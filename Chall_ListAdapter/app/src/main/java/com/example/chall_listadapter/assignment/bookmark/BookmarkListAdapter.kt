@@ -1,4 +1,4 @@
-package com.example.chall_listadapter.assignment.todo.list
+package com.example.chall_listadapter.assignment.bookmark
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,30 +10,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.chall_listadapter.assignment.todo.TodoModel
 import com.example.chall_listadapter.databinding.TodoListItemBinding
 
-class TodoListAdapter : ListAdapter<TodoModel, TodoListAdapter.TodoListViewHolder>(diffUtil) {
-    inner class TodoListViewHolder(private val binding: TodoListItemBinding) :
+class BookmarkListAdapter : ListAdapter<TodoModel, BookmarkListAdapter.BookmarkListViewHolder>(diffUtil) {
+    inner class BookmarkListViewHolder(private val binding: TodoListItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun onBind(model: TodoModel) = binding.also { b ->
             b.title.text = model.title
             b.description.text = model.content
-            b.root.setOnClickListener {
-                Log.d("myTag", "$layoutPosition: ${getItem(layoutPosition).toString()}")
-                itemClick?.onClick(it, layoutPosition)
-            }
-            b.switchBookmark.setOnClickListener {
-                onSwitchClick?.invoke(model)
-            }
+//            b.root.setOnClickListener {
+//                Log.d("myTag", "$layoutPosition: ${getItem(layoutPosition)}")
+//                itemClick?.onClick(it, layoutPosition)
+//            }
+//            b.switchBookmark.setOnClickListener {
+//                setDto?.invoke(model)
+//            }
         }
     }
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<TodoModel>() {
             override fun areItemsTheSame(oldItem: TodoModel, newItem: TodoModel): Boolean =
-                if (oldItem is TodoModel && newItem is TodoModel) {
-                    oldItem.id == newItem.id
-                } else {
-                    oldItem == newItem
-                }
+                oldItem.id == newItem.id
 
             override fun areContentsTheSame(oldItem: TodoModel, newItem: TodoModel): Boolean =
                 oldItem == newItem
@@ -47,18 +43,18 @@ class TodoListAdapter : ListAdapter<TodoModel, TodoListAdapter.TodoListViewHolde
 
     var itemClick: ItemClick? = null
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TodoListViewHolder =
-        TodoListViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookmarkListViewHolder =
+        BookmarkListViewHolder(
             TodoListItemBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
         )
 
-    override fun onBindViewHolder(holder: TodoListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: BookmarkListViewHolder, position: Int) {
         holder.onBind(getItem(position))
     }
 
-    private var onSwitchClick: ((model: TodoModel) -> Unit)? = null
-    fun setFunOnSwitchClick(l: ((model: TodoModel) -> Unit)?) {
-        onSwitchClick = l
-    }
+//    private var setDto: ((model: TodoModel) -> Unit)? = null
+//    fun setFunSetDto(l: ((model: TodoModel) -> Unit)?) {
+//        setDto = l
+//    }
 }

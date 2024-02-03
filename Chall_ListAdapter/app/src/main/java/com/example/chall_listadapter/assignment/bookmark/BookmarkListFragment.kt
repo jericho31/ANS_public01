@@ -1,11 +1,13 @@
 package com.example.chall_listadapter.assignment.bookmark
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.chall_listadapter.R
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import com.example.chall_listadapter.assignment.main.SharedViewModel
 import com.example.chall_listadapter.databinding.FragmentBookmarkListBinding
 
 class BookmarkListFragment : Fragment() {
@@ -16,6 +18,11 @@ class BookmarkListFragment : Fragment() {
 
     private var _binding: FragmentBookmarkListBinding? = null
     private val binding get() = _binding!!
+
+    private val sharedViewModel: SharedViewModel by activityViewModels()
+    private val viewModel: BookmarkListViewModel by viewModels()
+
+    private val adapter = BookmarkListAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,12 +39,13 @@ class BookmarkListFragment : Fragment() {
         initViewModel()
     }
 
-    private fun initView() = with(binding) {
-
+    private fun initView() = binding.also { b ->
+        b.rvBookmark.adapter = adapter
     }
 
-    private fun initViewModel() {
-
+    private fun initViewModel() = viewModel.also { vm ->
+        vm.uiState.observe(viewLifecycleOwner) { adapter.submitList(it.list) }
+        sharedViewModel.action.observe(viewLifecycleOwner) { vm.executeAction(it) }
     }
 
     override fun onDestroyView() {

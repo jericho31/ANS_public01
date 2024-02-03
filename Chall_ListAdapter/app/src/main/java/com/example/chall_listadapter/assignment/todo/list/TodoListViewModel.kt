@@ -6,11 +6,25 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.chall_listadapter.assignment.todo.TodoModel
 
+data class ActionData(
+    var type: ActionType = ActionType.Add,
+    var list: List<TodoModel> = emptyList()
+) {
+    enum class ActionType {
+        Add,
+        Remove,
+        Update
+    }
+}
+
 class TodoListViewModel : ViewModel() {
 
     private val _uiState: MutableLiveData<TodoListUiState> =
         MutableLiveData(TodoListUiState.init())
     val uiState: LiveData<TodoListUiState> get() = _uiState
+
+    private val _action: MutableLiveData<ActionData> = MutableLiveData(ActionData())
+    val action: LiveData<ActionData> get() = _action
 
     fun addTodoItem(model: TodoModel?) {
         if (model == null) return
@@ -43,5 +57,9 @@ class TodoListViewModel : ViewModel() {
                 it[position] = model
             }
         )
+    }
+
+    fun setAction(action: ActionData) {
+        _action.value = action
     }
 }

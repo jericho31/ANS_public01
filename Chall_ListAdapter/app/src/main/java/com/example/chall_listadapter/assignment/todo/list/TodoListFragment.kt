@@ -4,12 +4,14 @@ import android.app.Activity
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.example.chall_listadapter.assignment.main.SharedViewModel
 import com.example.chall_listadapter.assignment.todo.TodoModel
 import com.example.chall_listadapter.assignment.todo.content.TodoContentActivity
 import com.example.chall_listadapter.databinding.FragmentTodoListBinding
@@ -23,6 +25,7 @@ class TodoListFragment : Fragment() {
     private var _binding: FragmentTodoListBinding? = null
     private val binding get() = _binding!!
 
+    private val sharedViewModel: SharedViewModel by activityViewModels()
     private val viewModel: TodoListViewModel by viewModels()
 
     private val listAdapter = TodoListAdapter()
@@ -34,6 +37,11 @@ class TodoListFragment : Fragment() {
     ): View {
         _binding = FragmentTodoListBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -100,17 +108,22 @@ class TodoListFragment : Fragment() {
                 )
             }
         }
+        listAdapter.setFunOnSwitchClick { model ->
+            if (model.isBookmarked) {
+                viewModel.setAction(ActionData(ActionData.ActionType.Remove, listOf(model)))
+            } else {
+                viewModel.setAction(ActionData(ActionData.ActionType.Add, listOf(model)))
+            }
+        }
     }
 
     private fun initViewModel() = viewModel.also { vm ->
         vm.uiState.observe(viewLifecycleOwner) {
             listAdapter.submitList(it.list)
         }
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
+        vm.action.observe(viewLifecycleOwner) {
+            sharedViewModel.setAction(it)
+        }
     }
 
     fun addTodoItem(model: TodoModel?) {

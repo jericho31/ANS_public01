@@ -22,6 +22,8 @@ class TodoMainViewPagerAdapter(
         it.fragment::class.java == TodoListFragment::class.java
     }?.fragment
 
+    fun getBookmarkListFragment() = fragments[1].fragment as BookmarkListFragment
+
 //    fun getFragment(clazz: Class<out Fragment>): Fragment? =
 //        fragments.find { it.fragment::class.java == clazz }?.fragment
 
