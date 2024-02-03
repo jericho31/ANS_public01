@@ -13,7 +13,7 @@ import retrofit2.http.Query
  * size	Integer	한 페이지에 보여질 문서 수, 1~80 사이의 값, 기본 값 80
  */
 interface KakaoImageApiService {
-    @Headers("Authorization: KakaoAK ${BuildConfig.KAKAO_API_KEY}")
+    @Headers("Authorization: KakaoAK 499a422580c0f2b13d774e2a213c2de4")
     @GET("/v2/search/image")
     suspend fun searchImage(
         @Query("query") query: String,
