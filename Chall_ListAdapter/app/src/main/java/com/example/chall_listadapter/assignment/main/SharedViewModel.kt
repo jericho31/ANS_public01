@@ -9,7 +9,7 @@ class SharedViewModel : ViewModel() {
     private val _action: MutableLiveData<ActionData> = MutableLiveData(ActionData())
     val action: LiveData<ActionData> get() = _action
 
-    fun setAction(action: ActionData) {
+    fun setActionToBookmark(action: ActionData) {
         _action.value = action
     }
 }

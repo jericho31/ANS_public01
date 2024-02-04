@@ -86,11 +86,11 @@ class TodoListFragment : Fragment() {
         onSwitchCheckedChange = { isChecked, model ->
             model.isBookmarked = isChecked
             if (isChecked) {
-                sharedViewModel.setAction(
+                sharedViewModel.setActionToBookmark(
                     ActionData(ActionData.ActionType.Add, listOf(model.copy()))
                 )
             } else {
-                sharedViewModel.setAction(
+                sharedViewModel.setActionToBookmark(
                     ActionData(ActionData.ActionType.Remove, listOf(model.copy()))
                 )
             }
