@@ -26,6 +26,8 @@ class TodoListAdapter(
         fun onBind(model: TodoModel) = binding.also { b ->
             b.title.text = model.title
             b.description.text = model.content
+            b.switchBookmark.isChecked = model.isBookmarked
+
             b.root.setOnClickListener {
                 Log.d("myTag", "$layoutPosition: ${getItem(layoutPosition)}")
                 onItemClick(it, layoutPosition)

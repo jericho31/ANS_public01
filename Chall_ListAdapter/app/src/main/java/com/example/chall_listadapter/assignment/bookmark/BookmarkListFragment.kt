@@ -22,7 +22,9 @@ class BookmarkListFragment : Fragment() {
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val viewModel: BookmarkListViewModel by viewModels()
 
-    private val adapter = BookmarkListAdapter()
+    private val adapter = BookmarkListAdapter(
+        onSwitchCheckedChange = { isChecked, model -> }  // TODO: impl
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,6 +33,11 @@ class BookmarkListFragment : Fragment() {
     ): View {
         _binding = FragmentBookmarkListBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onDestroyView() {
+        _binding = null
+        super.onDestroyView()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,10 +53,5 @@ class BookmarkListFragment : Fragment() {
     private fun initViewModel() = viewModel.also { vm ->
         vm.uiState.observe(viewLifecycleOwner) { adapter.submitList(it.list) }
         sharedViewModel.action.observe(viewLifecycleOwner) { vm.executeAction(it) }
-    }
-
-    override fun onDestroyView() {
-        _binding = null
-        super.onDestroyView()
     }
 }
