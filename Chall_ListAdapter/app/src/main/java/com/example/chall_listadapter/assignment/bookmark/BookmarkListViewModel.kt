@@ -16,7 +16,7 @@ class BookmarkListViewModel : ViewModel() {
     fun executeAction(action: ActionData) {
         when (action.type) {
             ActionData.ActionType.Add -> addToList(action.list)
-            ActionData.ActionType.Remove -> TODO()
+            ActionData.ActionType.Remove -> removeFromList(action.list)
             ActionData.ActionType.Update -> TODO()
         }
     }
@@ -27,4 +27,9 @@ class BookmarkListViewModel : ViewModel() {
     fun addToList(list: List<TodoModel>) =
         // TODO: 그냥 리스트에 추가해도 옵저빙이 되나?
         _uiState.run { value = value!!.copy(list = ArrayList(value!!.list).apply { addAll(list) }) }
+
+    fun removeFromList(list: List<TodoModel>) = _uiState.run {
+        val ids = list.map { it.id }.toSet()
+        value = value!!.copy(list = ArrayList(value!!.list).apply { removeIf { it.id in ids } })
+    }
 }

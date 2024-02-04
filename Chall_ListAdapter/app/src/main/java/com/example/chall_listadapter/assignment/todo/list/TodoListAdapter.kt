@@ -12,7 +12,7 @@ import com.example.chall_listadapter.databinding.TodoListItemBinding
 
 class TodoListAdapter(
     private val onItemClick: (view: View, position: Int) -> Unit,
-    private val onSwitchClick: (model: TodoModel) -> Unit
+    private val onSwitchCheckedChange: (isChecked: Boolean, model: TodoModel) -> Unit
 ) : ListAdapter<TodoModel, TodoListAdapter.TodoListViewHolder>(object :
     DiffUtil.ItemCallback<TodoModel>() {
     override fun areItemsTheSame(oldItem: TodoModel, newItem: TodoModel): Boolean =
@@ -30,8 +30,8 @@ class TodoListAdapter(
                 Log.d("myTag", "$layoutPosition: ${getItem(layoutPosition)}")
                 onItemClick(it, layoutPosition)
             }
-            b.switchBookmark.setOnClickListener {
-                onSwitchClick(model)
+            b.switchBookmark.setOnCheckedChangeListener { _, isChecked ->
+                onSwitchCheckedChange(isChecked, model)
             }
         }
     }

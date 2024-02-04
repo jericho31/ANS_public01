@@ -83,13 +83,16 @@ class TodoListFragment : Fragment() {
                 TodoContentActivity.newIntentForUpdate(requireContext(), position)
             )
         },
-        onSwitchClick = { model ->
-            if (model.isBookmarked) {
-                sharedViewModel.setAction(ActionData(ActionData.ActionType.Remove, listOf(model)))
-                // TODO: 아이템 북마크 정보 수정
+        onSwitchCheckedChange = { isChecked, model ->
+            model.isBookmarked = isChecked
+            if (isChecked) {
+                sharedViewModel.setAction(
+                    ActionData(ActionData.ActionType.Add, listOf(model.copy()))
+                )
             } else {
-                sharedViewModel.setAction(ActionData(ActionData.ActionType.Add, listOf(model)))
-                // TODO: 아이템 북마크 정보 수정
+                sharedViewModel.setAction(
+                    ActionData(ActionData.ActionType.Remove, listOf(model.copy()))
+                )
             }
         }
     )
