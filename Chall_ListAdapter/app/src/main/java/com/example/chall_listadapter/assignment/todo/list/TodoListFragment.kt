@@ -85,9 +85,11 @@ class TodoListFragment : Fragment() {
         },
         onSwitchClick = { model ->
             if (model.isBookmarked) {
-                viewModel.setAction(ActionData(ActionData.ActionType.Remove, listOf(model)))
+                sharedViewModel.setAction(ActionData(ActionData.ActionType.Remove, listOf(model)))
+                // TODO: 아이템 북마크 정보 수정
             } else {
-                viewModel.setAction(ActionData(ActionData.ActionType.Add, listOf(model)))
+                sharedViewModel.setAction(ActionData(ActionData.ActionType.Add, listOf(model)))
+                // TODO: 아이템 북마크 정보 수정
             }
         }
     )
@@ -119,9 +121,6 @@ class TodoListFragment : Fragment() {
     private fun initViewModel() = viewModel.also { vm ->
         vm.uiState.observe(viewLifecycleOwner) {
             listAdapter.submitList(it.list)
-        }
-        vm.action.observe(viewLifecycleOwner) {
-            sharedViewModel.setAction(it)
         }
     }
 

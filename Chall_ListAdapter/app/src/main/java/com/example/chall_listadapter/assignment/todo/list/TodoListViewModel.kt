@@ -23,9 +23,6 @@ class TodoListViewModel : ViewModel() {
         MutableLiveData(TodoListUiState.init())
     val uiState: LiveData<TodoListUiState> get() = _uiState
 
-    private val _action: MutableLiveData<ActionData> = MutableLiveData(ActionData())
-    val action: LiveData<ActionData> get() = _action
-
     fun addTodoItem(model: TodoModel?) {
         if (model == null) return
 
@@ -57,9 +54,5 @@ class TodoListViewModel : ViewModel() {
                 it[position] = model
             }
         )
-    }
-
-    fun setAction(action: ActionData) {
-        _action.value = action
     }
 }
