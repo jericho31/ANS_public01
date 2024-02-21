@@ -50,8 +50,11 @@ class TodoListViewModel : ViewModel() {
 
         _uiState.value = uiState.value!!.copy(
             list = uiState.value!!.list.toMutableList().also {
-                Log.d("myTag", "뷰모델 업데이트 포지션: $position, 모델: $model")
-                it[position] = model
+                Log.d("myTag:뷰모델 업데이트", "포지션: $position, 모델: $model")
+                it[position] = it[position].copy(
+                    title = model.title,
+                    content = model.content
+                )
             }
         )
     }

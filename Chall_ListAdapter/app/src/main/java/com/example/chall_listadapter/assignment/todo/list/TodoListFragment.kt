@@ -31,7 +31,7 @@ class TodoListFragment : Fragment() {
     private val updateTodoLauncher = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
-        Log.d("myTag", "런처 콟백 resultCode: ${result.resultCode}")
+        Log.d("jj-TodoListFragment updateTodoLauncher 콜백", "resultCode: ${result.resultCode}")
         if (result.resultCode == Activity.RESULT_OK) {
             val contentType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 result.data?.getSerializableExtra(
@@ -45,11 +45,10 @@ class TodoListFragment : Fragment() {
                 ) as? TodoContentActivity.Companion.TodoContentType
             }
 
-            val position = result.data?.getIntExtra(
-                TodoContentActivity.EXTRA_ITEM_POSITION, -1
-            ) ?: -1
+            val position = result.data
+                ?.getIntExtra(TodoContentActivity.EXTRA_ITEM_POSITION, -1) ?: -1
 
-            Log.d("myTag", "런처 콟백 타입: $contentType, 포지션: $position")
+            Log.d("jj-TodoListFragment updateTodoLauncher 콜백", "타입: $contentType, 포지션: $position")
             when (contentType) {
                 null -> {}
                 TodoContentActivity.Companion.TodoContentType.CREATE -> {}
@@ -71,6 +70,9 @@ class TodoListFragment : Fragment() {
                         )
                     }
                     updateTodoItem(position, model)
+                    if (model != null) sharedViewModel.setActionToBookmark(
+                        ActionData(ActionData.ActionType.Update, listOf(model))
+                    )
                 }
             }
         }
@@ -78,7 +80,7 @@ class TodoListFragment : Fragment() {
 
     private val listAdapter = TodoListAdapter(
         onItemClick = { view, position ->
-            Log.d("myTag", "프래그먼트 온클릭 오버라이드")
+            Log.d("myTag:투두아이템클릭", "$position: $view")
             updateTodoLauncher.launch(
                 TodoContentActivity.newIntentForUpdate(requireContext(), position)
             )
@@ -117,8 +119,8 @@ class TodoListFragment : Fragment() {
         initViewModel()
     }
 
-    private fun initView() = with(binding) {
-        binding.todoList.adapter = listAdapter
+    private fun initView() = binding.also { b ->
+        b.todoList.adapter = listAdapter
     }
 
     private fun initViewModel() = viewModel.also { vm ->

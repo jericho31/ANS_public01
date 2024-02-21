@@ -1,6 +1,7 @@
 package com.example.chall_listadapter.assignment.bookmark
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,7 +52,10 @@ class BookmarkListFragment : Fragment() {
     }
 
     private fun initViewModel() = viewModel.also { vm ->
-        vm.uiState.observe(viewLifecycleOwner) { adapter.submitList(it.list) }
+        vm.uiState.observe(viewLifecycleOwner) {
+            Log.d("myTag:북마크 ui 옵저버", it.list.toString())
+            adapter.submitList(it.list)
+        }
         sharedViewModel.action.observe(viewLifecycleOwner) { vm.executeAction(it) }
     }
 }
